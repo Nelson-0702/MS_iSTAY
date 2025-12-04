@@ -60,11 +60,11 @@ iSTAY_Single = function (data, order.q = c(1, 2), Alltime = TRUE, start_T = NULL
       if (q == 1) {
         H <- sum((vector[vector > 0]/sum(vector)) * 
                    log(vector[vector > 0]/sum(vector))) * (-1)
-        out <- (1/exp(H) - 1)/(1/K - 1)
+        out <- (exp(H) - 1)/(K - 1)
       }
       else {
-        up <- 1 - 1/((sum((vector[vector > 0]/sum(vector))^q))^(1/(1 - q)))
-        out <- up/(1 - 1/K)
+        up <- 1 - ((sum((vector[vector > 0]/sum(vector))^q))^(1/(1 - q)))
+        out <- up/(1 - K)
       }
     }
     return(out)
@@ -291,7 +291,8 @@ fig_1a <- function(output){
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
           axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))
+          axis.title.y = element_text(hjust = 0.5, size = 14))+
+    theme(panel.border = element_rect(colour="black", size=1.2))
   
   
   
@@ -306,9 +307,10 @@ fig_1a <- function(output){
 fig_1b <- function(output, output2){
   output |> 
     ggplot() +
-    geom_line(aes(Order_q, Alpha, color = Dataset), linewidth = 1.5) +
-    geom_line(data = output2, aes(Order_q, Stability, color = Site, group = Dataset), linetype = "dashed", linewidth = 1.5, alpha = 0.7) +
+    geom_line(aes(Order_q, Alpha, color = Dataset, linetype = Dataset), linewidth = 1.5) +
+    geom_line(data = output2, aes(Order_q, Stability, color = Site, group = Dataset), linetype = "dotted", linewidth = 1.5, alpha = 0.7,show.legend = FALSE) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
+    scale_linetype_manual(name = "Plot",values = c("solid","dashed"),labels=c("B1A04_4", "B4A14_2"))+
     labs(x = "Order.q", y = "Alpha stability", color = "Plot") +
     theme_bw() +
     theme(legend.text = element_text(size = 12),
@@ -318,7 +320,8 @@ fig_1b <- function(output, output2){
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
           axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))
+          axis.title.y = element_text(hjust = 0.5, size = 14))+
+    theme(panel.border = element_rect(colour="black", size=1.2))
 }
 
 
@@ -340,7 +343,8 @@ fig_1c <- function(output){
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
           axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))
+          axis.title.y = element_text(hjust = 0.5, size = 14))+
+    theme(panel.border = element_rect(colour="black", size=1.2))
   
 }
 
@@ -455,11 +459,11 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1, y = 0.25, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-14,-3,2), size = 3.5) +
+                hjust = rep(-1.1, 3), vjust = c(-13,-4,0), size = 3.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1, y = 0.25, label = slope_text, color = block,
                     hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-12, -12, -10, -10),c(-1, -1, 1, 1),c(4, 4, 6, 6))),
+                    vjust = c(c(-11, -11, -9, -9),c(-2, -2, 0, 0),c(2, 2, 4, 4))),
                 size=3.5, key_glyph = draw_key_path) +
       labs(y = "Community stability")  +
       facet_wrap(~ version, 
@@ -482,11 +486,11 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1, y = 0.7, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-16,-14,-12), size = 3.5) +
+                hjust = rep(-1.1, 3), vjust = c(-15,-13,-11), size = 3.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1, y = 0.7, label = slope_text, color = block,
                     hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-14, -14, -12, -12),c(-12, -12, -10, -10),c(-10, -10, -8, -8))),
+                    vjust = c(c(-13, -13, -11, -11),c(-11, -11, -9, -9),c(-9, -9, -7, -7))),
                 size=3.5, key_glyph = draw_key_path) +
       labs(y = "Population stability") +
       facet_wrap(~ version, 
@@ -509,11 +513,11 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Synchrony, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1.5, y = 0.40, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-26,-26,-29), size = 3.5) +
+                hjust = rep(-1.1, 3), vjust = c(-20,-20,-22), size = 3.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1.5, y = 0.40, label = slope_text, color = block,
                     hjust = rep(-c(0, 1.1, 0, 1.1), 3),
-                    vjust = c(rep(c(-24, -24, -22, -22),2),c(-27, -27, -25, -25))),
+                    vjust = c(rep(c(-18, -18, -16, -16),2),c(-20, -20, -18, -18))),
                 size=3.5, key_glyph = draw_key_path) +
       labs(y = "Population synchrony") +
       facet_wrap(~ version, 
@@ -536,11 +540,11 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1, y = 0.6, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-4,5,13), size = 3.5) +
+                hjust = rep(-1.1, 3), vjust = c(-4,4,11), size = 3.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1, y = 0.6, label = slope_text, color = block,
                     hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(7, 7, 9, 9),c(15, 15, 17, 17))),
+                    vjust = c(c(-2, -2, 0, 0),c(6, 6, 8, 8),c(13, 13, 15, 15))),
                 size=3.5, key_glyph = draw_key_path) +
       labs(y = "Gamma stability") +
       facet_wrap(~ version, 
@@ -563,11 +567,11 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1, y = 0.6, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-4,8,15), size = 3.5) +
+                hjust = rep(-1.1, 3), vjust = c(-4,6,12), size = 3.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1, y = 0.6, label = slope_text, color = block,
                     hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(10, 10, 12, 12),c(17, 17, 19, 19))),
+                    vjust = c(c(-2, -2, 0, 0),c(8, 8, 10, 10),c(14, 14, 16, 16))),
                 size=3.5, key_glyph = draw_key_path) +
       labs(y = "Alpha stability") +
       facet_wrap(~ version, 
@@ -639,7 +643,8 @@ fig2_or_4 <- function(output, metric_name) {
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
           axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))
+          axis.title.y = element_text(hjust = 0.5, size = 14))+
+    theme(panel.border = element_rect(colour="black", size=1.2))
   
   return(p)
 }
@@ -667,7 +672,8 @@ fig_3_left <- function(summary_df) {
       axis.title.x = element_text(hjust = 0.5, size = 14),
       axis.title.y = element_text(hjust = 0.5, size = 14),
       axis.text.x = element_text(angle = 45, hjust = 1)
-    )
+    )+
+    theme(panel.border = element_rect(colour="black", size=1.2))
   
   # Plot for Gamma
   p1 <- ggplot(summary_df) +
@@ -767,7 +773,8 @@ fig_3_right <- function(output) {
       strip.text.y = element_text(size = 14),
       axis.title.x = element_text(hjust = 0.5, size = 14),
       axis.title.y = element_text(hjust = 0.5, size = 14)
-    )
+    )+
+    theme(panel.border = element_rect(colour="black", size=1.2))
 }
 
 
@@ -814,16 +821,20 @@ output_fig_1b <- list(
 
 ## Figure 1 (a)
 
-fig_1a(output_fig_1)
+fig_1a = fig_1a(output_fig_1)
 
 ## Figure 1 (b)
 
-fig_1b(output_fig_1, output_fig_1b)
+fig_1b = fig_1b(output_fig_1, output_fig_1b)
 
 ## Figure 1 (c)
 
-fig_1c(output_fig_1)
+fig_1c = fig_1c(output_fig_1)
 
+
+ggsave("Figure_1a.png", fig_1a, width = 8, height = 6, dpi = 600)
+ggsave("Figure_1b.png", fig_1b, width = 8, height = 6, dpi = 600)
+ggsave("Figure_1c.png", fig_1c, width = 8, height = 6, dpi = 600)
 
 # ========================================================================================================== #
 # Figure 2. Biodiversity–stability and biodiversity–synchrony relationships based on 76 plots.
@@ -843,20 +854,24 @@ output2 <- iSTAY_Multiple(Data_Jena_76_metapopulations, order.q = c(0.5, 1, 2))
 
 output_fig_2a <- LMM_2_to_4(output2, structure = structure2, metric_name = "Gamma")
 
-fig2_or_4(output_fig_2a, metric_name = "Gamma")
+fig_2a = fig2_or_4(output_fig_2a, metric_name = "Gamma")
 
 ## Figure 2 (b)
 
 output_fig_2b <- LMM_2_to_4(output2, structure = structure2, metric_name = "Alpha")
 
-fig2_or_4(output_fig_2b, metric_name = "Alpha")
+fig_2b = fig2_or_4(output_fig_2b, metric_name = "Alpha")
 
 ## Figure 2 (c)
 
 output_fig_2c <- LMM_2_to_4(output2 |> filter(Synchrony != 1), structure = structure2c, metric_name = "Synchrony")
 
-fig2_or_4(output_fig_2c, metric_name = "Synchrony")
+fig_2c = fig2_or_4(output_fig_2c, metric_name = "Synchrony")
 
+
+ggsave("Figure_2a.png", fig_2a, width = 12, height = 6, dpi = 600)
+ggsave("Figure_2b.png", fig_2b, width = 12, height = 6, dpi = 600)
+ggsave("Figure_2c.png", fig_2c, width = 12, height = 6, dpi = 300)
 
 # ========================================================================================================== #
 # Figure 3. Temporal effects of species richness on stability and synchrony based on 12 consecutive overlapping 10-year moving window.
@@ -900,15 +915,15 @@ Summary_fig_3_left <- bind_rows(output_fig_3_left) |>
 
 ## Figure 3 (a) left
 
-fig_3_left(Summary_fig_3_left)$Gamma_plot
+fig_3a_left = fig_3_left(Summary_fig_3_left)$Gamma_plot
 
 ## Figure 3 (b) left
 
-fig_3_left(Summary_fig_3_left)$Alpha_plot
+fig_3b_left = fig_3_left(Summary_fig_3_left)$Alpha_plot
 
 ## Figure 3 (c) left
 
-fig_3_left(Summary_fig_3_left)$Synchrony_plot
+fig_3c_left = fig_3_left(Summary_fig_3_left)$Synchrony_plot
 
 
 ### Right
@@ -922,20 +937,32 @@ structure3 <- data.frame(
 
 output_fig_3a_right <- slope_3(metric_name = "Gamma")
 
-fig_3_right(output_fig_3a_right)
+fig_3a_right = fig_3_right(output_fig_3a_right)
 
 ## Figure 3 (b) right
 
 output_fig_3b_right <- slope_3(metric_name = "Alpha")
 
-fig_3_right(output_fig_3b_right) +
-  geom_hline(yintercept = 0, color = "dodgerblue1", linewidth = 2)
+fig_3b_right = fig_3_right(output_fig_3b_right) 
+#   geom_hline(yintercept = 0, color = "dodgerblue1", linewidth = 2)
 
 ## Figure 3 (c) right
 
 output_fig_3c_right <- slope_3(metric_name = "Synchrony")
 
-fig_3_right(output_fig_3c_right)
+fig_3c_right = fig_3_right(output_fig_3c_right)
+
+
+# Left
+ggsave("Figure_3a_left.png", fig_3a_left, width = 12, height = 6, dpi = 600)
+ggsave("Figure_3b_left.png", fig_3b_left, width = 12, height = 6, dpi = 600)
+ggsave("Figure_3c_left.png", fig_3c_left, width = 12, height = 6, dpi = 300)
+
+# Right
+ggsave("Figure_3a_right.png", fig_3a_right, width = 12, height = 6, dpi = 600)
+ggsave("Figure_3b_right.png", fig_3b_right, width = 12, height = 6, dpi = 600)
+ggsave("Figure_3c_right.png", fig_3c_right, width = 12, height = 6, dpi = 300)
+
 
 # ========================================================================================================== #
 # Figure 4. Biodiversity–stability and biodiversity–synchrony relationships based on 20 sets
@@ -953,20 +980,24 @@ output4 <- iSTAY_Multiple(Data_Jena_20_metacommunities, order.q = c(0.5, 1, 2))
 
 output_fig_4a <- LMM_2_to_4(output4, structure = structure4, metric_name = "Gamma")
 
-fig2_or_4(output_fig_4a, metric_name = "Gamma")
+fig_4a = fig2_or_4(output_fig_4a, metric_name = "Gamma")
 
 ## Figure 4 (b)
 
 output_fig_4b <- LMM_2_to_4(output4, structure = structure4, metric_name = "Alpha")
 
-fig2_or_4(output_fig_4b, metric_name = "Alpha")
+fig_4b = fig2_or_4(output_fig_4b, metric_name = "Alpha")
 
 ## Figure 4 (c)
 
 output_fig_4c <- LMM_2_to_4(output4, structure = structure4, metric_name = "Synchrony")
 
-fig2_or_4(output_fig_4c, metric_name = "Synchrony")
+fig_4c = fig2_or_4(output_fig_4c, metric_name = "Synchrony")
 
+
+ggsave("Figure_4a.png", fig_4a, width = 12, height = 6, dpi = 600)
+ggsave("Figure_4b.png", fig_4b, width = 12, height = 6, dpi = 600)
+ggsave("Figure_4c.png", fig_4c, width = 12, height = 6, dpi = 300)
 
 
 # ========================================================================================================== #
