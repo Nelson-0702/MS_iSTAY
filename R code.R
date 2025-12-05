@@ -283,15 +283,19 @@ fig_1a <- function(output){
     scale_linetype_manual(name="Plot",values = c("solid", "dashed"),labels=c("B1A04_4", "B4A14_2")) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
     labs(x = "Order.q", y = "Gamma stability") +
+    guides(
+      linetype = guide_legend(keywidth = 3),
+      color = guide_legend(keywidth = 3)
+    ) +
     theme_bw() +
-    theme(legend.text = element_text(size = 12),
-          legend.title = element_text(size = 14),
+    theme(legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16),
           axis.text = element_text(size = 16),
           text = element_text(size = 14), 
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
-          axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))+
+          axis.title.x = element_text(hjust = 0.5, size = 20),
+          axis.title.y = element_text(hjust = 0.5, size = 20))+
     theme(panel.border = element_rect(colour="black", size=1.2))
   
   
@@ -308,19 +312,22 @@ fig_1b <- function(output, output2){
   output |> 
     ggplot() +
     geom_line(aes(Order_q, Alpha, color = Dataset, linetype = Dataset), linewidth = 1.5) +
-    geom_line(data = output2, aes(Order_q, Stability, color = Site, group = Dataset), linetype = "dotted", linewidth = 1.5, alpha = 0.7,show.legend = FALSE) +
+    geom_line(data = output2, aes(Order_q, Stability, color = Site, group = Dataset, linetype = Site), linewidth = 1.5, alpha = 0.3,show.legend = FALSE) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
     scale_linetype_manual(name = "Plot",values = c("solid","dashed"),labels=c("B1A04_4", "B4A14_2"))+
     labs(x = "Order.q", y = "Alpha stability", color = "Plot") +
-    theme_bw() +
-    theme(legend.text = element_text(size = 12),
-          legend.title = element_text(size = 14),
+    guides(
+      linetype = guide_legend(keywidth = 3),
+      color = guide_legend(keywidth = 3)
+    )+theme_bw() +
+    theme(legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16),
           axis.text = element_text(size = 16),
           text = element_text(size = 14), 
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
-          axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))+
+          axis.title.x = element_text(hjust = 0.5, size = 20),
+          axis.title.y = element_text(hjust = 0.5, size = 20))+
     theme(panel.border = element_rect(colour="black", size=1.2))
 }
 
@@ -335,15 +342,19 @@ fig_1c <- function(output){
     labs(x = "Order.q", y = "Synchrony among species", color = "Plot") +
     scale_linetype_manual(name="Plot",values = c("solid", "dashed"),labels=c("B1A04_4", "B4A14_2")) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
+    guides(
+      linetype = guide_legend(keywidth = 3),
+      color = guide_legend(keywidth = 3)
+    )+
     theme_bw() +
-    theme(legend.text = element_text(size = 12),
-          legend.title = element_text(size = 14),
+    theme(legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16),
           axis.text = element_text(size = 16),
           text = element_text(size = 14), 
           strip.text.x = element_text(size = 14),
           strip.text.y = element_text(size = 14),
-          axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))+
+          axis.title.x = element_text(hjust = 0.5, size = 20),
+          axis.title.y = element_text(hjust = 0.5, size = 20))+
     theme(panel.border = element_rect(colour="black", size=1.2))
   
 }
@@ -458,13 +469,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1, y = 0.25, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-13,-4,0), size = 3.5) +
+                aes(x = 0.5, y = 0.25, label = slope_text),
+                hjust = c(-1.2,-1.2,-1.2), vjust = c(-11,-4,-1), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1, y = 0.25, label = slope_text, color = block,
-                    hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-11, -11, -9, -9),c(-2, -2, 0, 0),c(2, 2, 4, 4))),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 0.5, y = 0.25, label = slope_text, color = block,
+                    hjust = rep(-c(1.2,0,1.2,0), 3),
+                    vjust = c(c(-9, -9, -7, -7),c(-2, -2, 0, 0),c(1, 1, 3, 3))),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Community stability")  +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -485,13 +496,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1, y = 0.7, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-15,-13,-11), size = 3.5) +
+                aes(x = 0.5, y = 0.7, label = slope_text),
+                hjust = rep(-1.25, 3), vjust = c(-11,-10,-8), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1, y = 0.7, label = slope_text, color = block,
-                    hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-13, -13, -11, -11),c(-11, -11, -9, -9),c(-9, -9, -7, -7))),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 0.5, y = 0.7, label = slope_text, color = block,
+                    hjust = rep(-c(0,1.25,0,1.25), 3),
+                    vjust = c(c(-9, -9, -7, -7),c(-8, -8, -6, -6),c(-6, -6, -4, -4))),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Population stability") +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -512,13 +523,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Synchrony, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1.5, y = 0.40, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-20,-20,-22), size = 3.5) +
+                aes(x = 1.25, y = 0.40, label = slope_text),
+                hjust = rep(-1.25, 3), vjust = c(-16,-16,-18), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1.5, y = 0.40, label = slope_text, color = block,
-                    hjust = rep(-c(0, 1.1, 0, 1.1), 3),
-                    vjust = c(rep(c(-18, -18, -16, -16),2),c(-20, -20, -18, -18))),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 1.25, y = 0.40, label = slope_text, color = block,
+                    hjust = rep(-c(0, 1.25, 0, 1.25), 3),
+                    vjust = c(rep(c(-14, -14, -12, -12),2),c(-16, -16, -14, -14))),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Population synchrony") +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -539,13 +550,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1, y = 0.6, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-4,4,11), size = 3.5) +
+                aes(x = 0.5, y = 0.6, label = slope_text),
+                hjust = rep(-1.25, 3), vjust = c(-4,2,7), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1, y = 0.6, label = slope_text, color = block,
-                    hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(6, 6, 8, 8),c(13, 13, 15, 15))),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 0.5, y = 0.6, label = slope_text, color = block,
+                    hjust = rep(-c(0,1.25,0,1.25), 3),
+                    vjust = c(c(-2, -2, 0, 0),c(4, 4, 6, 6),c(9, 9, 11, 11))),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Gamma stability") +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -566,13 +577,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1, y = 0.6, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = c(-4,6,12), size = 3.5) +
+                aes(x = 0.5, y = 0.6, label = slope_text),
+                hjust = rep(-1.25, 3), vjust = c(-4,4,8), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1, y = 0.6, label = slope_text, color = block,
-                    hjust = rep(-c(0,1.1,0,1.1), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(8, 8, 10, 10),c(14, 14, 16, 16))),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 0.5, y = 0.6, label = slope_text, color = block,
+                    hjust = rep(-c(0,1.25,0,1.25), 3),
+                    vjust = c(c(-2, -2, 0, 0),c(6, 6, 8, 8),c(10, 10, 12, 12))),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Alpha stability") +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -593,13 +604,13 @@ fig2_or_4 <- function(output, metric_name) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Synchrony, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
-                aes(x = 1, y = 0.8, label = slope_text),
-                hjust = rep(-1.1, 3), vjust = rep(2, 3), size = 3.5) +
+                aes(x = 0.5, y = 0.8, label = slope_text),
+                hjust = rep(-1.25, 3), vjust = rep(4, 3), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
-                aes(x = 1, y = 0.8, label = slope_text, color = block,
-                    hjust = rep(-c(0, 1.1, 0, 1.1), 3),
-                    vjust = rep(c(4, 4, 6, 6),3)),
-                size=3.5, key_glyph = draw_key_path) +
+                aes(x = 0.5, y = 0.8, label = slope_text, color = block,
+                    hjust = rep(-c(0, 1.25, 0, 1.25), 3),
+                    vjust = rep(c(6, 6, 8, 8),3)),
+                size=4.5, key_glyph = draw_key_path) +
       labs(y = "Plot spatial synchrony") +
       facet_wrap(~ version, 
                  scales = "free_y") +
@@ -636,14 +647,14 @@ fig2_or_4 <- function(output, metric_name) {
     theme(legend.position = "bottom",
           axis.title = element_text(size = 13),
           legend.box.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-          legend.text = element_text(size = 12),
+          legend.text = element_text(size = 14),
           legend.title = element_blank(),
           axis.text = element_text(size = 16),
           text = element_text(size = 14),
-          strip.text.x = element_text(size = 14),
+          strip.text.x = element_text(size = 20),
           strip.text.y = element_text(size = 14),
-          axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))+
+          axis.title.x = element_text(hjust = 0.5, size = 20),
+          axis.title.y = element_text(hjust = 0.5, size = 20))+
     theme(panel.border = element_rect(colour="black", size=1.2))
   
   return(p)
@@ -664,15 +675,15 @@ fig_3_left <- function(summary_df) {
       legend.position = "bottom",
       axis.title = element_text(size = 13),
       legend.box.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-      legend.text = element_text(size = 12),
+      legend.text = element_text(size = 14),
       text = element_text(size = 14),
       axis.text = element_text(size = 14),
-      strip.text.x = element_text(size = 14),
+      strip.text.x = element_text(size = 20),
       strip.text.y = element_text(size = 14),
-      axis.title.x = element_text(hjust = 0.5, size = 14),
-      axis.title.y = element_text(hjust = 0.5, size = 14),
+      axis.title.x = element_text(hjust = 0.5, size = 20),
+      axis.title.y = element_text(hjust = 0.5, size = 20),
       axis.text.x = element_text(angle = 45, hjust = 1)
-    )+
+    )  +
     theme(panel.border = element_rect(colour="black", size=1.2))
   
   # Plot for Gamma
@@ -680,6 +691,10 @@ fig_3_left <- function(summary_df) {
     geom_point(aes(x = Start_year, y = mean_gamma, color = factor(log2_sowndiv), shape = factor(log2_sowndiv)), size = 3) +
     geom_line(aes(x = Start_year, y = mean_gamma, color = factor(log2_sowndiv)), linewidth = 1) +
     facet_wrap(~ Order_q, nrow = 1) +
+    guides(
+      linetype = guide_legend(keywidth = 3),   # 讓線型 legend 變長
+      color    = guide_legend(keywidth = 3)    # 讓顏色 legend 也變長
+    ) +
     scale_color_manual(values = color_palette) +
     scale_shape_manual(values = shape_palette) +
     scale_x_continuous(breaks = x_breaks) +
@@ -691,6 +706,10 @@ fig_3_left <- function(summary_df) {
     geom_point(aes(x = Start_year, y = mean_alpha, color = factor(log2_sowndiv), shape = factor(log2_sowndiv)), size = 3) +
     geom_line(aes(x = Start_year, y = mean_alpha, color = factor(log2_sowndiv)), linewidth = 1) +
     facet_wrap(~ Order_q, nrow = 1) +
+    guides(
+      linetype = guide_legend(keywidth = 3),   # 讓線型 legend 變長
+      color    = guide_legend(keywidth = 3)    # 讓顏色 legend 也變長
+    ) +
     scale_color_manual(values = color_palette) +
     scale_shape_manual(values = shape_palette) +
     scale_x_continuous(breaks = x_breaks) +
@@ -704,6 +723,10 @@ fig_3_left <- function(summary_df) {
     geom_point(aes(x = Start_year, y = mean_syn, color = factor(log2_sowndiv), shape = factor(log2_sowndiv)), size = 3) +
     geom_line(aes(x = Start_year, y = mean_syn, color = factor(log2_sowndiv)), linewidth = 1) +
     facet_wrap(~ Order_q, nrow = 1) +
+    guides(
+      linetype = guide_legend(keywidth = 3),   # 讓線型 legend 變長
+      color    = guide_legend(keywidth = 3)    # 讓顏色 legend 也變長
+    ) +
     scale_color_manual(values = color_palette[-1]) +
     scale_shape_manual(values = shape_palette[-1]) +
     scale_x_continuous(breaks = x_breaks) +
@@ -759,20 +782,23 @@ fig_3_right <- function(output) {
     scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
     scale_color_manual(values = default_colors) +
     labs(y = y_label, x = "Starting year of sliding 10-year windows") +
-    guides(linetype = guide_legend(keywidth = 3.1)) +
+    guides(
+      linetype = guide_legend(keywidth = 3),   # 讓線型 legend 變長
+      color    = guide_legend(keywidth = 3)    # 讓顏色 legend 也變長
+    ) +
     theme_bw() +
     theme(
       legend.position = "bottom", 
       axis.title = element_text(size = 13),
       legend.box.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-      legend.text = element_text(size = 12),
+      legend.text = element_text(size = 18),
       legend.title = element_blank(),
       text = element_text(size = 14), 
       axis.text = element_text(size = 16),
-      strip.text.x = element_text(size = 14),
+      strip.text.x = element_text(size = 20),
       strip.text.y = element_text(size = 14),
-      axis.title.x = element_text(hjust = 0.5, size = 14),
-      axis.title.y = element_text(hjust = 0.5, size = 14)
+      axis.title.x = element_text(hjust = 0.5, size = 20),
+      axis.title.y = element_text(hjust = 0.5, size = 20)
     )+
     theme(panel.border = element_rect(colour="black", size=1.2))
 }
