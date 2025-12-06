@@ -470,162 +470,91 @@ fig2_or_4 <- function(output, metric_name) {
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 0.5, y = 0.25, label = slope_text),
-                hjust = c(-1.2,-1.2,-1.2), vjust = c(-11,-4,-1), size=4.5) +
+                hjust = c(-1.2,-1.2,-1.2), vjust = rep(0,3), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 0.5, y = 0.25, label = slope_text, color = block,
                     hjust = rep(-c(1.2,0,1.2,0), 3),
-                    vjust = c(c(-9, -9, -7, -7),c(-2, -2, 0, 0),c(1, 1, 3, 3))),
+                    vjust = rep(c(2,2,4,4), 3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Community stability")  +
       facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0.4, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0.25, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0.15, 1.00)        )
-        )
-      )
+                 scales = "free_y")+
+      scale_y_continuous(limits = c(0.15, 1.0))
     
   } else if (identical(output, output_fig_2b)) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 0.5, y = 0.7, label = slope_text),
-                hjust = rep(-1.25, 3), vjust = c(-11,-10,-8), size=4.5) +
+                hjust = rep(-1.25, 3), vjust = c(-8,-8,-8), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 0.5, y = 0.7, label = slope_text, color = block,
                     hjust = rep(-c(0,1.25,0,1.25), 3),
-                    vjust = c(c(-9, -9, -7, -7),c(-8, -8, -6, -6),c(-6, -6, -4, -4))),
+                    vjust = rep(c(-6, -6, -4, -4),3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Population stability") +
-      facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0.25, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0.15, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0, 1)        )
-        )
-      )
+      facet_wrap(~ version)+
+      scale_y_continuous(limits = c(0, 1.0))
     
   } else if (identical(output, output_fig_2c)) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Synchrony, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 1.25, y = 0.40, label = slope_text),
-                hjust = rep(-1.25, 3), vjust = c(-16,-16,-18), size=4.5) +
+                hjust = rep(-1.25, 3), vjust = c(-16,-16,-16), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 1.25, y = 0.40, label = slope_text, color = block,
                     hjust = rep(-c(0, 1.25, 0, 1.25), 3),
-                    vjust = c(rep(c(-14, -14, -12, -12),2),c(-16, -16, -14, -14))),
+                    vjust = rep(c(-14, -14, -12, -12),3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Population synchrony") +
-      facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0.1, 1.00)        )
-        )
-      )
+      facet_wrap(~ version) +
+      scale_y_continuous(limits = c(0, 1.0))
     
   } else if (identical(output, output_fig_4a)) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Gamma, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 0.5, y = 0.6, label = slope_text),
-                hjust = rep(-1.25, 3), vjust = c(-4,2,7), size=4.5) +
+                hjust = rep(-1.25, 3), vjust = c(7,7,7), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 0.5, y = 0.6, label = slope_text, color = block,
                     hjust = rep(-c(0,1.25,0,1.25), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(4, 4, 6, 6),c(9, 9, 11, 11))),
+                    vjust = rep(c(9, 9, 11, 11),3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Gamma stability") +
-      facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0.6, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0.5, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0.35, 1.00)        )
-        )
-      )
+      facet_wrap(~ version) +
+      scale_y_continuous(limits = c(0.35, 1.0))
     
   } else if (identical(output, output_fig_4b)) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Alpha, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 0.5, y = 0.6, label = slope_text),
-                hjust = rep(-1.25, 3), vjust = c(-4,4,8), size=4.5) +
+                hjust = rep(-1.25, 3), vjust = c(8,8,8), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 0.5, y = 0.6, label = slope_text, color = block,
                     hjust = rep(-c(0,1.25,0,1.25), 3),
-                    vjust = c(c(-2, -2, 0, 0),c(6, 6, 8, 8),c(10, 10, 12, 12))),
+                    vjust = rep(c(10, 10, 12, 12),3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Alpha stability") +
-      facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0.6, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0.45, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0.3, 1.00)        )
-        )
-      )
+      facet_wrap(~ version) +
+      scale_y_continuous(limits = c(0.3, 1.0))
     
   } else if (identical(output, output_fig_4c)) {
     p <- p +
       geom_point(data = total_fit, aes(x = log2_sowndiv, y = Synchrony, color = block), size = 3, alpha = 0.5) +
       geom_text(data = slope_text |> filter(block == "Total"),
                 aes(x = 0.5, y = 0.8, label = slope_text),
-                hjust = rep(-1.25, 3), vjust = rep(4, 3), size=4.5) +
+                hjust = rep(-1.25, 3), vjust = rep(6, 3), size=4.5) +
       geom_text(data = slope_text |> filter(block != "Total"),
                 aes(x = 0.5, y = 0.8, label = slope_text, color = block,
                     hjust = rep(-c(0, 1.25, 0, 1.25), 3),
-                    vjust = rep(c(6, 6, 8, 8),3)),
+                    vjust = rep(c(8, 8, 10, 10),3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Plot spatial synchrony") +
-      facet_wrap(~ version, 
-                 scales = "free_y") +
-      facetted_pos_scales(
-        y = list(
-          version == "q = 0.5" ~ scale_y_continuous(
-            limits = c(0.7, 1.00)
-          ),
-          version == "q = 1" ~ scale_y_continuous(
-            limits = c(0.7, 1.00)
-          ),
-          version == "q = 2" ~ scale_y_continuous(
-            limits = c(0.7, 1.00)        )
-        )
-      )
+      facet_wrap(~ version) +
+      scale_y_continuous(limits = c(0.7, 1.0))
   }
   
   p <- p +
@@ -858,9 +787,9 @@ fig_1b = fig_1b(output_fig_1, output_fig_1b)
 fig_1c = fig_1c(output_fig_1)
 
 
-ggsave("Figure_1a.png", fig_1a, width = 8, height = 6, dpi = 600)
-ggsave("Figure_1b.png", fig_1b, width = 8, height = 6, dpi = 600)
-ggsave("Figure_1c.png", fig_1c, width = 8, height = 6, dpi = 600)
+ggsave("Figure_1a.png", fig_1a, width = 8, height = 6, dpi = 1000)
+ggsave("Figure_1b.png", fig_1b, width = 8, height = 6, dpi = 1000)
+ggsave("Figure_1c.png", fig_1c, width = 8, height = 6, dpi = 1000)
 
 # ========================================================================================================== #
 # Figure 2. Biodiversity–stability and biodiversity–synchrony relationships based on 76 plots.
@@ -895,9 +824,9 @@ output_fig_2c <- LMM_2_to_4(output2 |> filter(Synchrony != 1), structure = struc
 fig_2c = fig2_or_4(output_fig_2c, metric_name = "Synchrony")
 
 
-ggsave("Figure_2a.png", fig_2a, width = 12, height = 6, dpi = 600)
-ggsave("Figure_2b.png", fig_2b, width = 12, height = 6, dpi = 600)
-ggsave("Figure_2c.png", fig_2c, width = 12, height = 6, dpi = 300)
+ggsave("Figure_2a.png", fig_2a, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_2b.png", fig_2b, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_2c.png", fig_2c, width = 12, height = 6, dpi = 1000)
 
 # ========================================================================================================== #
 # Figure 3. Temporal effects of species richness on stability and synchrony based on 12 consecutive overlapping 10-year moving window.
@@ -980,14 +909,14 @@ fig_3c_right = fig_3_right(output_fig_3c_right)
 
 
 # Left
-ggsave("Figure_3a_left.png", fig_3a_left, width = 12, height = 6, dpi = 600)
-ggsave("Figure_3b_left.png", fig_3b_left, width = 12, height = 6, dpi = 600)
-ggsave("Figure_3c_left.png", fig_3c_left, width = 12, height = 6, dpi = 300)
+ggsave("Figure_3a_left.png", fig_3a_left, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_3b_left.png", fig_3b_left, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_3c_left.png", fig_3c_left, width = 12, height = 6, dpi = 1000)
 
 # Right
-ggsave("Figure_3a_right.png", fig_3a_right, width = 12, height = 6, dpi = 600)
-ggsave("Figure_3b_right.png", fig_3b_right, width = 12, height = 6, dpi = 600)
-ggsave("Figure_3c_right.png", fig_3c_right, width = 12, height = 6, dpi = 300)
+ggsave("Figure_3a_right.png", fig_3a_right, width = 8, height = 6, dpi = 1000)
+ggsave("Figure_3b_right.png", fig_3b_right, width = 8, height = 6, dpi = 1000)
+ggsave("Figure_3c_right.png", fig_3c_right, width = 8, height = 6, dpi = 1000)
 
 
 # ========================================================================================================== #
@@ -1021,9 +950,9 @@ output_fig_4c <- LMM_2_to_4(output4, structure = structure4, metric_name = "Sync
 fig_4c = fig2_or_4(output_fig_4c, metric_name = "Synchrony")
 
 
-ggsave("Figure_4a.png", fig_4a, width = 12, height = 6, dpi = 600)
-ggsave("Figure_4b.png", fig_4b, width = 12, height = 6, dpi = 600)
-ggsave("Figure_4c.png", fig_4c, width = 12, height = 6, dpi = 300)
+ggsave("Figure_4a.png", fig_4a, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_4b.png", fig_4b, width = 12, height = 6, dpi = 1000)
+ggsave("Figure_4c.png", fig_4c, width = 12, height = 6, dpi = 1000)
 
 
 # ========================================================================================================== #
