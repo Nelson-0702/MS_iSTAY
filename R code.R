@@ -279,7 +279,7 @@ iSTAY_Multiple = function (data, order.q = c(1, 2), Alltime = TRUE, start_T = NU
 fig_1a <- function(output){
   output |> 
     ggplot() +
-    geom_line(aes(Order_q, Gamma, color = Dataset,linetype = Dataset), linewidth = 1.5)+
+    geom_line(aes(Order_q, Gamma, color = Dataset,linetype = Dataset), linewidth = 2.5)+
     scale_linetype_manual(name="Plot",values = c("solid", "dashed"),labels=c("B1A04_4", "B4A14_2")) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
     labs(x = "Order.q", y = "Gamma stability") +
@@ -311,7 +311,7 @@ fig_1a <- function(output){
 fig_1b <- function(output, output2){
   output |> 
     ggplot() +
-    geom_line(aes(Order_q, Alpha, color = Dataset, linetype = Dataset), linewidth = 1.5) +
+    geom_line(aes(Order_q, Alpha, color = Dataset, linetype = Dataset), linewidth = 2.5) +
     geom_line(data = output2, aes(Order_q, Stability, color = Site, group = Dataset, linetype = Site), linewidth = 1.5, alpha = 0.3,show.legend = FALSE) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
     scale_linetype_manual(name = "Plot",values = c("solid","dashed"),labels=c("B1A04_4", "B4A14_2"))+
@@ -338,7 +338,7 @@ fig_1b <- function(output, output2){
 fig_1c <- function(output){
   output |> 
     ggplot() +
-    geom_line(aes(Order_q, Synchrony, color = Dataset,linetype = Dataset), linewidth = 1.5) +
+    geom_line(aes(Order_q, Synchrony, color = Dataset,linetype = Dataset), linewidth = 2.5) +
     labs(x = "Order.q", y = "Synchrony among species", color = "Plot") +
     scale_linetype_manual(name="Plot",values = c("solid", "dashed"),labels=c("B1A04_4", "B4A14_2")) +
     scale_color_manual(name="Plot",values = c("red", "blue"),labels=c("B1A04_4", "B4A14_2")) +
@@ -477,8 +477,7 @@ fig2_or_4 <- function(output, metric_name) {
                     vjust = rep(c(2,2,4,4), 3)),
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Community stability")  +
-      facet_wrap(~ version, 
-                 scales = "free_y")+
+      facet_wrap(~ version)+
       scale_y_continuous(limits = c(0.15, 1.0))
     
   } else if (identical(output, output_fig_2b)) {
@@ -764,13 +763,13 @@ df1 <- Map(function(x, nm) {
   x
 }, df1, names(df1))
 
-df1$B4A14_2[df1$B4A14_2 == 0] = 10^-5
-df1$B1A04_4[df1$B1A04_4 == 0] = 10^-5
+# df1$B4A14_2[df1$B4A14_2 == 0] = 10^-5
+# df1$B1A04_4[df1$B1A04_4 == 0] = 10^-5
 
-output_fig_1 <- iSTAY_Multiple(df1, order.q = seq(0.01, 2, 0.01))
+output_fig_1 <- iSTAY_Multiple(df1, order.q = seq(0.1, 2, 0.01))
 output_fig_1b <- list(
-  B1A04_4 = iSTAY_Single(df1$B1A04_4, order.q = seq(0.01, 2, 0.01)),
-  B4A14_2 = iSTAY_Single(df1$B4A14_2, order.q = seq(0.01, 2, 0.01))
+  B1A04_4 = iSTAY_Single(df1$B1A04_4, order.q = seq(0.1, 2, 0.01)),
+  B4A14_2 = iSTAY_Single(df1$B4A14_2, order.q = seq(0.1, 2, 0.01))
 ) |>
   bind_rows(.id = "Site")
 
