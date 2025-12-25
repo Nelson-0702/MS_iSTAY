@@ -2136,6 +2136,7 @@ gg_alpha_wrt_weight_group_by_species <- function(data = Jena_tidy, q = 1, thresh
   
 }
 
+
 gg_alpha_wrt_weight_group_by_species(data = Jena_tidy |> filter(number_of_species != 1), q = 1, threshold = 1 / 6)
 gg_alpha_wrt_weight_group_by_species(data = Jena_tidy |> filter(number_of_species != 1), q = 2, threshold = 1 / 6)
 
