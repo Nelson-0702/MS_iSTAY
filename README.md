@@ -6,9 +6,9 @@ The data used for examples are based on (i) Biomass time series data: 21 years(2
 
 "MS_iStay" includes the following files:
 
-(1) "R code.R": Main code for plotting all figures (Figure 1 to 4 in the paper).
+(1) "Main_Document_R code.R": R code used to generate all figures in the main text (Figures 1–4).
 
-(2) "Source R code.txt": Source R code. 
+(2) "Supporting_Information_R_code.R": R code used to generate all figures in the Supporting Information (Appendix Figures S1–S5).
 
 (3) "Brief guide iStay.docx": introduction to iStay and a brief guide to R code for making graphics in Chao et al. 2025 paper.
 
