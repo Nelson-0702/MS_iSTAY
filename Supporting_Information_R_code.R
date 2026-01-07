@@ -2,19 +2,15 @@
 # ==============================================================================
 # 0. Load Required Libraries
 # ==============================================================================
-library(tidyverse)    # Includes ggplot2, dplyr, tidyr, purrr, tibble
-library(mvtnorm)      # For multivariate normal distribution
-library(knitr)        # For table generation
-library(RColorBrewer) # For plot palettes
-library(gtools)       # For permutations/combinations (if needed)
-library(ggplot2)
-library(dplyr)
+library(tidyverse)    
+library(mvtnorm)      
+library(knitr)        
+library(RColorBrewer)
+library(gtools)       
 # Check if gridExtra is installed, install if not, then load it
 if(!require(gridExtra)) install.packages("gridExtra")
 library(gridExtra)
-if(!require(gridExtra)) install.packages("gridExtra")
 library(iSTAY)
-library(tidyverse)
 library(lmerTest)
 
 # --- Core Function: Calculate Stability (S_q) ---
