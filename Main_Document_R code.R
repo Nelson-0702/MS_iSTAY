@@ -5,6 +5,8 @@ library(ggh4x)
 library(tidyverse)
 library(lmerTest)
 library(ggplot2)
+library(gridExtra)
+library(ggpubr)
 
 #install.packages(iSTAY)
 library(iSTAY) # Just for the Jena dataset. 
@@ -748,11 +750,6 @@ fig_3_right <- function(output) {
 # ========================================================================================================== #
 
 
-# library(devtools)
-# install_github("AnneChao/iSTAY")    # Press 'Enter' to skip update options
-
-# source("Source R code.txt")
-
 
 # ========================================================================================================== #
 # Figure 1. Gamma, alpha and synchrony profiles for q between 0 and 2 within each plot.
@@ -763,8 +760,6 @@ df1 <- Map(function(x, nm) {
   x
 }, df1, names(df1))
 
-# df1$B4A14_2[df1$B4A14_2 == 0] = 10^-5
-# df1$B1A04_4[df1$B1A04_4 == 0] = 10^-5
 
 output_fig_1 <- iSTAY_Multiple(df1, order.q = seq(0.1, 2, 0.01))
 output_fig_1b <- list(
@@ -786,9 +781,21 @@ fig_1b = fig_1b(output_fig_1, output_fig_1b)
 fig_1c = fig_1c(output_fig_1)
 
 
-ggsave("Figure_1a.png", fig_1a, width = 8, height = 6, dpi = 1000)
-ggsave("Figure_1b.png", fig_1b, width = 8, height = 6, dpi = 1000)
-ggsave("Figure_1c.png", fig_1c, width = 8, height = 6, dpi = 1000)
+# ggsave("Figure_1a.pdf", fig_1a, width = 8, height = 6, dpi = 1000)
+# ggsave("Figure_1b.pdf", fig_1b, width = 8, height = 6, dpi = 1000)
+# ggsave("Figure_1c.pdf", fig_1c, width = 8, height = 6, dpi = 1000)
+
+
+p1a <- annotate_figure( fig_1a, top = text_grob("(a) Plot or gamma stability", size = 18, face = "bold", hjust = 1.05) ) 
+p1b <- annotate_figure( fig_1b, top = text_grob("(b) Species or alpha stability", size = 18, face = "bold", hjust = 0.92) ) 
+row1 <- arrangeGrob( p1a, p1b, ncol = 2, widths = c(8, 8) ) 
+p1c <- annotate_figure( fig_1c, top = text_grob("(c) Synchrony among species", size = 18, face = "bold", hjust = 0.92) ) 
+blank <- grid::nullGrob() 
+row2 <- arrangeGrob( p1c, blank, ncol = 2, widths = c(8, 8) ) 
+g <- grid.arrange( row1, row2,grid::nullGrob(), ncol = 1, heights = c(1, 1, 1) ) 
+ggsave( "Figure 1.pdf", g, height = 20 ,width = 16, dpi = 1000 )
+
+
 
 # ========================================================================================================== #
 # Figure 2. Biodiversity–stability and biodiversity–synchrony relationships based on 76 plots.
@@ -823,9 +830,24 @@ output_fig_2c <- LMM_2_to_4(output2 |> filter(Synchrony != 1), structure = struc
 fig_2c = fig2_or_4(output_fig_2c, metric_name = "Synchrony")
 
 
-ggsave("Figure_2a.png", fig_2a, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_2b.png", fig_2b, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_2c.png", fig_2c, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_2a.pdf", fig_2a, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_2b.pdf", fig_2b, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_2c.pdf", fig_2c, width = 12, height = 6, dpi = 1000)
+
+
+
+ggsave("Figure 2.pdf", grid.arrange(annotate_figure(fig_2a, top = text_grob(paste("(a) Biodiversity–stability relationships for plot/gamma stability "),
+                                                                            size = 20, face = "bold", just = "left", hjust = 0.62)),
+                                    annotate_figure(fig_2b, top = text_grob(paste("(b) Biodiversity–stability relationships for species/alpha stability "),
+                                                                            size = 20, face = "bold", just = "left", hjust = 0.6)),
+                                    annotate_figure(fig_2c, top = text_grob(paste("(c) Biodiversity–synchrony relationships for species synchrony within a plot "),
+                                                                            size = 20, face = "bold", just = "left", hjust = 0.51)),
+                                    heights = c(1, 1, 1)),
+       width = 12, height = 20, dpi = 1000)
+
+
+
+
 
 # ========================================================================================================== #
 # Figure 3. Temporal effects of species richness on stability and synchrony based on 12 consecutive overlapping 10-year moving window.
@@ -907,15 +929,49 @@ output_fig_3c_right <- slope_3(metric_name = "Synchrony")
 fig_3c_right = fig_3_right(output_fig_3c_right)
 
 
-# Left
-ggsave("Figure_3a_left.png", fig_3a_left, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_3b_left.png", fig_3b_left, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_3c_left.png", fig_3c_left, width = 12, height = 6, dpi = 1000)
+# # Left
+# ggsave("Figure_3a_left.pdf", fig_3a_left, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_3b_left.pdf", fig_3b_left, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_3c_left.pdf", fig_3c_left, width = 12, height = 6, dpi = 1000)
+# 
+# # Right
+# ggsave("Figure_3a_right.pdf", fig_3a_right, width = 8, height = 6, dpi = 1000)
+# ggsave("Figure_3b_right.pdf", fig_3b_right, width = 8, height = 6, dpi = 1000)
+# ggsave("Figure_3c_right.pdf", fig_3c_right, width = 8, height = 6, dpi = 1000)
 
-# Right
-ggsave("Figure_3a_right.png", fig_3a_right, width = 8, height = 6, dpi = 1000)
-ggsave("Figure_3b_right.png", fig_3b_right, width = 8, height = 6, dpi = 1000)
-ggsave("Figure_3c_right.png", fig_3c_right, width = 8, height = 6, dpi = 1000)
+library(gridExtra)
+library(ggpubr)
+
+# 一列：左圖 + 右圖（各自有title）
+p_a <- annotate_figure(fig_3a_left,
+                       top = text_grob("(a) Gamma stability", size = 18, face = "bold",
+                                       hjust = 2.3))
+p_b <- annotate_figure(fig_3a_right,
+                       top = text_grob("(b) Effect of biodiversity on gamma stability", size = 18, face = "bold",
+                                       hjust = 0.61))
+
+row1 <- arrangeGrob(p_a, p_b, ncol = 2, widths = c(12, 8))
+
+# 第二列
+p_c <- annotate_figure(fig_3b_left,
+                       top = text_grob("(c) Alpha stability", size = 18, face = "bold", hjust = 2.55))
+p_d <- annotate_figure(fig_3b_right,
+                       top = text_grob("(d) Effect of biodiversity on alpha stability", size = 18, face = "bold", hjust = 0.61))
+row2 <- arrangeGrob(p_c, p_d, ncol = 2, widths = c(12, 8))
+
+# 第三列
+p_e <- annotate_figure(fig_3c_left,
+                       top = text_grob("(e) Species-level synchrony", size = 18, face = "bold", hjust = 1.59))
+p_f <- annotate_figure(fig_3c_right,
+                       top = text_grob("(f) Effect of biodiversity on synchrony", size = 18, face = "bold", hjust = 0.68))
+row3 <- arrangeGrob(p_e, p_f, ncol = 2, widths = c(12, 8))
+
+g <- grid.arrange(row1, row2, row3, ncol = 1, heights = c(1,1,1))
+
+ggsave("Figure 3.pdf", g, width = 20, height = 18, dpi = 1000)
+
+
+
 
 
 # ========================================================================================================== #
@@ -949,11 +1005,26 @@ output_fig_4c <- LMM_2_to_4(output4, structure = structure4, metric_name = "Sync
 fig_4c = fig2_or_4(output_fig_4c, metric_name = "Synchrony")
 
 
-ggsave("Figure_4a.png", fig_4a, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_4b.png", fig_4b, width = 12, height = 6, dpi = 1000)
-ggsave("Figure_4c.png", fig_4c, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_4a.pdf", fig_4a, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_4b.pdf", fig_4b, width = 12, height = 6, dpi = 1000)
+# ggsave("Figure_4c.pdf", fig_4c, width = 12, height = 6, dpi = 1000)
+
+ggsave("Figure 4.pdf", grid.arrange(annotate_figure(fig_4a, top = text_grob(paste("(a) Biodiversity–stability relationships for gamma stability "),
+                                                                      size = 20, face = "bold", just = "left", hjust = 0.68)),
+                                      annotate_figure(fig_4b, top = text_grob(paste("(b) Biodiversity–stability relationships for alpha stability "),
+                                                                      size = 20, face = "bold", just = "left", hjust = 0.7)),
+                                      annotate_figure(fig_4c, top = text_grob(paste("(c) Biodiversity-synchrony relationships for spatial synchrony among plots "),
+                                                                      size = 20, face = "bold", just = "left", hjust = 0.525)),
+                                      heights = c(1, 1, 1)),
+       width = 12, height = 20, dpi = 1000)
 
 
+
+
+
+
+## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix
+##############################################################################################################
 # ========================================================================================================== #
 # Figure S4 Relationships between biodiversity and gamma stability, alpha stability, species synchrony and asynchrony across three time periods
 
