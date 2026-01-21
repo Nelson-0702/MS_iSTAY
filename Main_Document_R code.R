@@ -7,7 +7,7 @@ library(lmerTest)
 # library(gridExtra)
 # library(ggpubr)
 
-#install.packages(iSTAY)
+#install.packages("iSTAY")
 library(iSTAY) # Just for the Jena dataset. 
 
 data("Data_Jena_20_metacommunities")
