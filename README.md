@@ -1,15 +1,15 @@
-MS_iStay (R code and data for graphics in 2025 manuscripts by Chao et al.)
+MS_iSTAY (R code and data for graphics in 2025 manuscripts by Chao et al.)
 
 R code and data are provided for plotting all figures in the paper "A continuum of information-based temporal stability measures and their decomposition across hierarchical levels". Before using the R code, you must download the package "iStay" from Anne Chao's Github. 
 
-The data used for examples are based on (i) Biomass time series data: 21 years(2003, 2005-2024) of time series data for 76 plots from the Jena Experiment;  and (ii) Metacommunity biomass time series data: 22 years(2003-2024) of time series data for 20 metacommunities from the Jena Experiment. Both datasets are available through the "iStay" package on Anne Chao's Github. 
+The data used for examples are based on (i) Biomass time series data: 21 years(2003, 2005-2024) of time series data for 76 plots from the Jena Experiment;  and (ii) Metacommunity biomass time series data: 22 years(2003-2024) of time series data for 20 metacommunities from the Jena Experiment. Both datasets are available through the "iSTAY" package on Anne Chao's Github. 
 
-"MS_iStay" includes the following files:
+"MS_iSTAY" includes the following files:
 
 (1) "Main_Document_R code.R": R code used to generate all figures in the main text (Figures 1–4).
 
 (2) "Supporting_Information_R_code.R": R code used to generate all figures in the Supporting Information (Appendix Figures S1–S5).
 
-(3) "Brief guide iStay.docx": introduction to iStay and a brief guide to R code for making graphics in Chao et al. 2025 paper.
+(3) "Brief guide iSTAY.docx": introduction to iStay and a brief guide to R code for making graphics in Chao et al. 2025 paper.
 
 (4) "Environment.RData": output.

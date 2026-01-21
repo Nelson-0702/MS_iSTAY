@@ -343,6 +343,175 @@ print(p1)
 #################################################################################################################
 
 
+iSTAY_Multiple = function (data, order.q = c(1, 2), Alltime = TRUE, start_T = NULL, 
+                           end_T = NULL) 
+{
+  NA_num <- sum(is.na(data))
+  if (NA_num != 0) {
+    stop("There are some NA in the data.")
+  }
+  if (sum(which(order.q <= 0))) {
+    stop("Order q need larger than 0.")
+  }
+  if (Alltime != TRUE) {
+    if (is.null(start_T) | is.null(end_T)) {
+      stop("Need to set the length of time series for calculating.")
+    }
+    if ((start_T >= end_T) | length(start_T) != 1 | length(end_T) != 
+        1) {
+      stop("Starting and ending time need to be a number, and ending time needs larger than starting time.")
+    }
+  }
+  Stabillity_Multiple <- function(ZZ, q) {
+    K <- ncol(ZZ)
+    z_iplus <- apply(ZZ, 1, sum)
+    if (length(which(z_iplus == 0)) != 0) {
+      ZZ <- ZZ[-which(z_iplus == 0), ]
+    }
+    ZZ <- as.matrix(ZZ)
+    z_iplus <- apply(ZZ, 1, sum)
+    
+    ww <- 1/nrow(ZZ)
+    
+    if (nrow(ZZ) != 1) p_i <- as.data.frame(apply(ZZ, 2, function(w) w/z_iplus)) else p_i = matrix(apply(ZZ, 2, function(w) w/z_iplus), nrow = 1)
+    ZZ = p_i
+    z_plusk <- apply(ZZ, 2, sum)
+    z_plusplus <- sum(ZZ)
+    p_pool <- z_plusk/z_plusplus
+    # ww <- z_iplus/z_plusplus
+    
+    if (q == 1) {
+      p_i_new <- p_i
+      p_pool_new <- p_pool
+      alpha <- ( exp(-sum(ww * p_i_new[p_i_new > 0] * log(p_i_new[p_i_new > 0])) ) - 1)/(K - 1)
+      gamma <- (exp(-sum(p_pool[p_pool > 0] * log(p_pool_new[p_pool_new > 
+                                                               0]))) - 1)/(K - 1)
+    }
+    else {
+      alpha <- (sum(ww * (p_i)^q)^(1/(1 - q)) - 1)/(K - 1)
+      gamma <- (sum(p_pool^q)^(1/(1 - q)) - 1)/(K - 1)
+    }
+    return(c(gamma, alpha, (gamma/alpha), (gamma - alpha)))
+  }
+  # Synchrony <- function(ZZ, q) {
+  #   M <- nrow(ZZ)
+  #   K <- ncol(ZZ)
+  #   if (M == 1) {
+  #     value <- 1
+  #   }
+  #   else {
+  #     z_iplus <- apply(ZZ, 1, sum)
+  #     if (length(which(z_iplus == 0)) != 0) {
+  #       ZZ <- ZZ[-which(z_iplus == 0), ]
+  #     }
+  #     ZZ <- as.matrix(ZZ)
+  #     z_iplus <- apply(ZZ, 1, sum)
+  #     if (length(z_iplus) <= 1) {
+  #       value <- NA
+  #     }
+  #     else {
+  #       z_plusk <- apply(ZZ, 2, sum)
+  #       z_plusplus <- sum(ZZ)
+  #       p_i <- apply(ZZ, 2, function(w) w/z_iplus)
+  #       ww <- z_iplus/z_plusplus
+  #       if (q == 1) {
+  #         J <- exp(-sum(ZZ[ZZ > 0]/z_plusplus * log(ZZ[ZZ > 
+  #                                                        0]/z_plusplus)))
+  #         J <- ifelse(J < K, J, J/M + K * (M - 1)/M)
+  #         pool <- z_plusk/z_plusplus
+  #         pool[which(pool == 0)] <- 10^(-15)
+  #         G <- exp(-sum(pool * log(pool)))
+  #         A <- exp(-sum(ZZ[ZZ > 0]/z_plusplus * log(p_i[p_i > 
+  #                                                         0])))
+  #         value <- (J - G)/(J - A)
+  #       }
+  #       else {
+  #         J <- sum((ZZ/z_plusplus)^q)^(1/(1 - q))
+  #         J <- ifelse(J < K, J, J/M + K * (M - 1)/M)
+  #         G <- sum((z_plusk/z_plusplus)^q)^(1/(1 - q))
+  #         A <- sum(apply(ZZ, 2, function(w) (w/z_iplus)^q * 
+  #                          ww))^(1/(1 - q))
+  #         value <- (J - G)/(J - A)
+  #       }
+  #     }
+  #   }
+  #   return(value)
+  # }
+  
+  Synchrony <- function(ZZ, q) {
+    
+    
+    z_iplus <- apply(ZZ, 1, sum)
+    if (length(which(z_iplus == 0)) != 0) {
+      ZZ <- ZZ[-which(z_iplus == 0), ]
+    }
+    ZZ <- as.matrix(ZZ)
+    
+    if(sum(rowSums(ZZ)>0)!=1  ){
+      
+      K = nrow(ZZ)
+      Time = ncol(ZZ)
+      beta = Stabillity_Multiple(ZZ,q)[4]
+      gamma = Stabillity_Multiple(ZZ,q)[1]
+      
+      beta_max = (1 - 1/K)/(Time - 1)+(1 - 1/K)*gamma
+      1 - beta/beta_max
+      
+    }else{
+      
+      1
+      
+    } 
+    
+    
+  }
+  
+  if (is.data.frame(data) | is.matrix(data)) {
+    if (Alltime == TRUE) {
+      subdata <- data
+    }
+    else {
+      subdata <- data[, c(start_T:end_T)]
+    }
+    out <- as.matrix(sapply(order.q, function(qq) c(Stabillity_Multiple(subdata, 
+                                                                        q = qq), Synchrony(subdata, q = qq))))
+    result <- data.frame(Site = rep(1, length(order.q)), 
+                         Order_q = order.q, t(out))
+    colnames(result)[3:7] <- c("Stab_Gamma", "Stab_Alpha", 
+                               "Stab_Beta_multiplicative", "Stab_Beta_additive", 
+                               "Synchrony")
+    result <- result[, -5]
+  }
+  else {
+    out <- lapply(order.q, function(qq) {
+      cal <- lapply(data, function(ZZ) {
+        if (Alltime == T) {
+          subZZ <- ZZ
+        }
+        else {
+          subZZ <- ZZ[, c(start_T:end_T)]
+        }
+        outout <- c(Stabillity_Multiple(subZZ, q = qq), 
+                    Synchrony(subZZ, q = qq))
+        result <- data.frame(Order_q = qq, t(outout))
+        colnames(result)[2:6] <- c("Stab_Gamma", "Stab_Alpha", 
+                                   "Stab_Beta_multiplicative", "Stab_Beta_additive", 
+                                   "Synchrony")
+        result <- result[, -4]
+        return(result)
+      })
+      cal2 <- do.call(rbind, cal)
+      calcal <- data.frame(Site = names(data), cal2)
+      return(calcal)
+    })
+    result <- do.call(rbind, out)
+  }
+  colnames(result) <- c("Dataset", "Order_q", "Gamma", "Alpha", 
+                        "Beta", "Synchrony")
+  return(result)
+}
+
+
 
 
 # Jena LMM ----------------------------------------------------------------
@@ -929,71 +1098,72 @@ ggplot()+
 
 # Beta(76) -----------------------------------------------------------
 
-names <- struct_plot |> 
-  filter(sowndiv != 1) |> 
-  mutate(names = paste0(plot, "_", block, "_", sowndiv)) |> 
+names <- struct_plot |>
+  filter(sowndiv != 1) |>
+  mutate(names = paste0(plot, "_", block, "_", sowndiv)) |>
   select(names) |> unlist()
 
 blocksowndiv_spe2 <- struct_plot |> filter(sowndiv != 1) |> select(block, sowndiv)
 colnames(blocksowndiv_spe2) <- c("block", "sowndiv")
 blocksowndiv_spe2$sowndiv <- log2(as.numeric(blocksowndiv_spe2$sowndiv))
 
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_beta_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-  return(out)
-})
 
-plotdata_text3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- plotdata3 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
-plotdata3$significance <- factor(plotdata3$significance, levels = c("significant", "non-significant"))
-
-
-ggplot() +
-  geom_point(data = plotdata3, 
-             aes(x = sowndiv, y = beta, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata3, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text3,
-            aes(x = 2.55, y = 0.545, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","purple")) +
-  scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(1, 2, 3, 4), labels = c(2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype = "", x = "Number of species (log2 scale)", y = "Beta stability") + 
-  theme_bw() +
-  theme(legend.position = "bottom", 
-        # axis.text=element_text(size=10),
-        axis.title=element_text(size=13),
-        legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        # legend.margin = margin(0, 0, 0, 0),
-        # legend.box.margin = margin(-10, -10, -5, -10), 
-        text = element_text(size = 14), 
-        # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-        axis.text = element_text(size = 16),
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
+# Jena_10yr_window_result <- lapply(year_windows, function(years){
+#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
+#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
+#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
+#     sub_df
+#   })
+#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
+#   out <- multi_beta_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
+#   return(out)
+# })
+# 
+# plotdata_text3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
+#   Jena_10yr_window_result[[i]]$slope_text |>
+#     filter(block == "Total") |>
+#     mutate(year = year_labels[i])
+# }))
+# 
+# plotdata3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
+#   Jena_10yr_window_result[[i]]$total_fit |>
+#     mutate(year = year_labels[i])
+# }))
+# 
+# plotdata3 <- plotdata3 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
+# plotdata3$significance <- factor(plotdata3$significance, levels = c("significant", "non-significant"))
+# 
+# 
+# ggplot() +
+#   geom_point(data = plotdata3, 
+#              aes(x = sowndiv, y = beta, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
+#   geom_line(data = plotdata3, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
+#   geom_text(data = plotdata_text3,
+#             aes(x = 2.55, y = 0.545, label = slope_text, color = year,
+#                 hjust = rep(-c(0,0,0), 3),
+#                 vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
+#   scale_color_manual(values = c("#EA0000","#0066CC","purple")) +
+#   scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
+#   scale_x_continuous(breaks = c(1, 2, 3, 4), labels = c(2, 4, 8, 16)) +
+#   facet_grid(~ version) +
+#   guides(linetype = guide_legend(keywidth = 3.1)) +
+#   labs(linetype = "", x = "Number of species (log2 scale)", y = "Beta stability") + 
+#   theme_bw() +
+#   theme(legend.position = "bottom", 
+#         # axis.text=element_text(size=10),
+#         axis.title=element_text(size=13),
+#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
+#         legend.text = element_text(size = 12),
+#         legend.title = element_blank(), 
+#         # legend.margin = margin(0, 0, 0, 0),
+#         # legend.box.margin = margin(-10, -10, -5, -10), 
+#         text = element_text(size = 14), 
+#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
+#         axis.text = element_text(size = 16),
+#         strip.text.x = element_text(size = 14),
+#         strip.text.y = element_text(size = 14),
+#         axis.title.x = element_text(hjust = 0.5, size = 14),
+#         axis.title.y = element_text(hjust = 0.5, size = 14))
 
 # ggsave("Population Beta 0512.png", width = 9.5, height = 5)
 
@@ -1002,8 +1172,8 @@ ggplot() +
 
 Jena_10yr_window_result <- lapply(year_windows, function(years){
   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
+    sub_df <- df[, years, drop = FALSE]      
+    sub_df[sub_df == 0] <- 1e-15             
     sub_df
   })
   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
@@ -1183,9 +1353,8 @@ gg_alpha_wrt_weight_group_by_species <- function(data = Jena_tidy, q = 1, thresh
     
   }
   
-  # 這邊是在篩選weight大但是stab小的
-  # 將每個plot的weight由大排到小，如果stab小於mean_alpha則選取
-  # 但是更好的做法應該是，選取每個plot每個物種的stab小於alpha，老師問再改
+
+  
   temp <- data |> 
     mutate(total_biomass = rowSums(across(contains("20")))) |> 
     group_by(label) |> 

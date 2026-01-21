@@ -4,9 +4,8 @@
 library(ggh4x)
 library(tidyverse)
 library(lmerTest)
-library(ggplot2)
-library(gridExtra)
-library(ggpubr)
+# library(gridExtra)
+# library(ggpubr)
 
 #install.packages(iSTAY)
 library(iSTAY) # Just for the Jena dataset. 
@@ -770,15 +769,15 @@ output_fig_1b <- list(
 
 ## Figure 1 (a)
 
-fig_1a = fig_1a(output_fig_1)
+fig_1a(output_fig_1)
 
 ## Figure 1 (b)
 
-fig_1b = fig_1b(output_fig_1, output_fig_1b)
+fig_1b(output_fig_1, output_fig_1b)
 
 ## Figure 1 (c)
 
-fig_1c = fig_1c(output_fig_1)
+fig_1c(output_fig_1)
 
 
 # ggsave("Figure_1a.pdf", fig_1a, width = 8, height = 6, dpi = 1000)
@@ -786,14 +785,14 @@ fig_1c = fig_1c(output_fig_1)
 # ggsave("Figure_1c.pdf", fig_1c, width = 8, height = 6, dpi = 1000)
 
 
-p1a <- annotate_figure( fig_1a, top = text_grob("(a) Plot or gamma stability", size = 18, face = "bold", hjust = 1.05) ) 
-p1b <- annotate_figure( fig_1b, top = text_grob("(b) Species or alpha stability", size = 18, face = "bold", hjust = 0.92) ) 
-row1 <- arrangeGrob( p1a, p1b, ncol = 2, widths = c(8, 8) ) 
-p1c <- annotate_figure( fig_1c, top = text_grob("(c) Synchrony among species", size = 18, face = "bold", hjust = 0.92) ) 
-blank <- grid::nullGrob() 
-row2 <- arrangeGrob( p1c, blank, ncol = 2, widths = c(8, 8) ) 
-g <- grid.arrange( row1, row2,grid::nullGrob(), ncol = 1, heights = c(1, 1, 1) ) 
-ggsave( "Figure 1.pdf", g, height = 20 ,width = 16, dpi = 1000 )
+# p1a <- annotate_figure( fig_1a, top = text_grob("(a) Plot or gamma stability", size = 18, face = "bold", hjust = 1.05) ) 
+# p1b <- annotate_figure( fig_1b, top = text_grob("(b) Species or alpha stability", size = 18, face = "bold", hjust = 0.92) ) 
+# row1 <- arrangeGrob( p1a, p1b, ncol = 2, widths = c(8, 8) ) 
+# p1c <- annotate_figure( fig_1c, top = text_grob("(c) Synchrony among species", size = 18, face = "bold", hjust = 0.92) ) 
+# blank <- grid::nullGrob() 
+# row2 <- arrangeGrob( p1c, blank, ncol = 2, widths = c(8, 8) ) 
+# g <- grid.arrange( row1, row2,grid::nullGrob(), ncol = 1, heights = c(1, 1, 1) ) 
+# ggsave( "Figure 1.pdf", g, height = 20 ,width = 16, dpi = 1000 )
 
 
 
@@ -815,19 +814,19 @@ output2 <- iSTAY_Multiple(Data_Jena_76_metapopulations, order.q = c(0.5, 1, 2))
 
 output_fig_2a <- LMM_2_to_4(output2, structure = structure2, metric_name = "Gamma")
 
-fig_2a = fig2_or_4(output_fig_2a, metric_name = "Gamma")
+fig2_or_4(output_fig_2a, metric_name = "Gamma")
 
 ## Figure 2 (b)
 
 output_fig_2b <- LMM_2_to_4(output2, structure = structure2, metric_name = "Alpha")
 
-fig_2b = fig2_or_4(output_fig_2b, metric_name = "Alpha")
+fig2_or_4(output_fig_2b, metric_name = "Alpha")
 
 ## Figure 2 (c)
 
 output_fig_2c <- LMM_2_to_4(output2 |> filter(Synchrony != 1), structure = structure2c, metric_name = "Synchrony")
 
-fig_2c = fig2_or_4(output_fig_2c, metric_name = "Synchrony")
+fig2_or_4(output_fig_2c, metric_name = "Synchrony")
 
 
 # ggsave("Figure_2a.pdf", fig_2a, width = 12, height = 6, dpi = 1000)
@@ -836,14 +835,14 @@ fig_2c = fig2_or_4(output_fig_2c, metric_name = "Synchrony")
 
 
 
-ggsave("Figure 2.pdf", grid.arrange(annotate_figure(fig_2a, top = text_grob(paste("(a) Biodiversity–stability relationships for plot/gamma stability "),
-                                                                            size = 20, face = "bold", just = "left", hjust = 0.62)),
-                                    annotate_figure(fig_2b, top = text_grob(paste("(b) Biodiversity–stability relationships for species/alpha stability "),
-                                                                            size = 20, face = "bold", just = "left", hjust = 0.6)),
-                                    annotate_figure(fig_2c, top = text_grob(paste("(c) Biodiversity–synchrony relationships for species synchrony within a plot "),
-                                                                            size = 20, face = "bold", just = "left", hjust = 0.51)),
-                                    heights = c(1, 1, 1)),
-       width = 12, height = 20, dpi = 1000)
+# ggsave("Figure 2.pdf", grid.arrange(annotate_figure(fig_2a, top = text_grob(paste("(a) Biodiversity–stability relationships for plot/gamma stability "),
+#                                                                             size = 20, face = "bold", just = "left", hjust = 0.62)),
+#                                     annotate_figure(fig_2b, top = text_grob(paste("(b) Biodiversity–stability relationships for species/alpha stability "),
+#                                                                             size = 20, face = "bold", just = "left", hjust = 0.6)),
+#                                     annotate_figure(fig_2c, top = text_grob(paste("(c) Biodiversity–synchrony relationships for species synchrony within a plot "),
+#                                                                             size = 20, face = "bold", just = "left", hjust = 0.51)),
+#                                     heights = c(1, 1, 1)),
+#        width = 12, height = 20, dpi = 1000)
 
 
 
@@ -891,15 +890,15 @@ Summary_fig_3_left <- bind_rows(output_fig_3_left) |>
 
 ## Figure 3 (a) left
 
-fig_3a_left = fig_3_left(Summary_fig_3_left)$Gamma_plot
+fig_3_left(Summary_fig_3_left)$Gamma_plot
 
 ## Figure 3 (b) left
 
-fig_3b_left = fig_3_left(Summary_fig_3_left)$Alpha_plot
+fig_3_left(Summary_fig_3_left)$Alpha_plot
 
 ## Figure 3 (c) left
 
-fig_3c_left = fig_3_left(Summary_fig_3_left)$Synchrony_plot
+fig_3_left(Summary_fig_3_left)$Synchrony_plot
 
 
 ### Right
@@ -913,20 +912,20 @@ structure3 <- data.frame(
 
 output_fig_3a_right <- slope_3(metric_name = "Gamma")
 
-fig_3a_right = fig_3_right(output_fig_3a_right)
+fig_3_right(output_fig_3a_right)
 
 ## Figure 3 (b) right
 
 output_fig_3b_right <- slope_3(metric_name = "Alpha")
 
-fig_3b_right = fig_3_right(output_fig_3b_right) 
+fig_3_right(output_fig_3b_right) 
 #   geom_hline(yintercept = 0, color = "dodgerblue1", linewidth = 2)
 
 ## Figure 3 (c) right
 
 output_fig_3c_right <- slope_3(metric_name = "Synchrony")
 
-fig_3c_right = fig_3_right(output_fig_3c_right)
+fig_3_right(output_fig_3c_right)
 
 
 # # Left
@@ -939,36 +938,35 @@ fig_3c_right = fig_3_right(output_fig_3c_right)
 # ggsave("Figure_3b_right.pdf", fig_3b_right, width = 8, height = 6, dpi = 1000)
 # ggsave("Figure_3c_right.pdf", fig_3c_right, width = 8, height = 6, dpi = 1000)
 
-library(gridExtra)
-library(ggpubr)
 
-# 一列：左圖 + 右圖（各自有title）
-p_a <- annotate_figure(fig_3a_left,
-                       top = text_grob("(a) Gamma stability", size = 18, face = "bold",
-                                       hjust = 2.3))
-p_b <- annotate_figure(fig_3a_right,
-                       top = text_grob("(b) Effect of biodiversity on gamma stability", size = 18, face = "bold",
-                                       hjust = 0.61))
-
-row1 <- arrangeGrob(p_a, p_b, ncol = 2, widths = c(12, 8))
-
-# 第二列
-p_c <- annotate_figure(fig_3b_left,
-                       top = text_grob("(c) Alpha stability", size = 18, face = "bold", hjust = 2.55))
-p_d <- annotate_figure(fig_3b_right,
-                       top = text_grob("(d) Effect of biodiversity on alpha stability", size = 18, face = "bold", hjust = 0.61))
-row2 <- arrangeGrob(p_c, p_d, ncol = 2, widths = c(12, 8))
-
-# 第三列
-p_e <- annotate_figure(fig_3c_left,
-                       top = text_grob("(e) Species-level synchrony", size = 18, face = "bold", hjust = 1.59))
-p_f <- annotate_figure(fig_3c_right,
-                       top = text_grob("(f) Effect of biodiversity on synchrony", size = 18, face = "bold", hjust = 0.68))
-row3 <- arrangeGrob(p_e, p_f, ncol = 2, widths = c(12, 8))
-
-g <- grid.arrange(row1, row2, row3, ncol = 1, heights = c(1,1,1))
-
-ggsave("Figure 3.pdf", g, width = 20, height = 18, dpi = 1000)
+# 
+# 
+# p_a <- annotate_figure(fig_3a_left,
+#                        top = text_grob("(a) Gamma stability", size = 18, face = "bold",
+#                                        hjust = 2.3))
+# p_b <- annotate_figure(fig_3a_right,
+#                        top = text_grob("(b) Effect of biodiversity on gamma stability", size = 18, face = "bold",
+#                                        hjust = 0.61))
+# 
+# row1 <- arrangeGrob(p_a, p_b, ncol = 2, widths = c(12, 8))
+# 
+# 
+# p_c <- annotate_figure(fig_3b_left,
+#                        top = text_grob("(c) Alpha stability", size = 18, face = "bold", hjust = 2.55))
+# p_d <- annotate_figure(fig_3b_right,
+#                        top = text_grob("(d) Effect of biodiversity on alpha stability", size = 18, face = "bold", hjust = 0.61))
+# row2 <- arrangeGrob(p_c, p_d, ncol = 2, widths = c(12, 8))
+# 
+# 
+# p_e <- annotate_figure(fig_3c_left,
+#                        top = text_grob("(e) Species-level synchrony", size = 18, face = "bold", hjust = 1.59))
+# p_f <- annotate_figure(fig_3c_right,
+#                        top = text_grob("(f) Effect of biodiversity on synchrony", size = 18, face = "bold", hjust = 0.68))
+# row3 <- arrangeGrob(p_e, p_f, ncol = 2, widths = c(12, 8))
+# 
+# g <- grid.arrange(row1, row2, row3, ncol = 1, heights = c(1,1,1))
+# 
+# ggsave("Figure 3.pdf", g, width = 20, height = 18, dpi = 1000)
 
 
 
@@ -990,1226 +988,35 @@ output4 <- iSTAY_Multiple(Data_Jena_20_metacommunities, order.q = c(0.5, 1, 2))
 
 output_fig_4a <- LMM_2_to_4(output4, structure = structure4, metric_name = "Gamma")
 
-fig_4a = fig2_or_4(output_fig_4a, metric_name = "Gamma")
+fig2_or_4(output_fig_4a, metric_name = "Gamma")
 
 ## Figure 4 (b)
 
 output_fig_4b <- LMM_2_to_4(output4, structure = structure4, metric_name = "Alpha")
 
-fig_4b = fig2_or_4(output_fig_4b, metric_name = "Alpha")
+fig2_or_4(output_fig_4b, metric_name = "Alpha")
 
 ## Figure 4 (c)
 
 output_fig_4c <- LMM_2_to_4(output4, structure = structure4, metric_name = "Synchrony")
 
-fig_4c = fig2_or_4(output_fig_4c, metric_name = "Synchrony")
+fig2_or_4(output_fig_4c, metric_name = "Synchrony")
 
 
 # ggsave("Figure_4a.pdf", fig_4a, width = 12, height = 6, dpi = 1000)
 # ggsave("Figure_4b.pdf", fig_4b, width = 12, height = 6, dpi = 1000)
 # ggsave("Figure_4c.pdf", fig_4c, width = 12, height = 6, dpi = 1000)
 
-ggsave("Figure 4.pdf", grid.arrange(annotate_figure(fig_4a, top = text_grob(paste("(a) Biodiversity–stability relationships for gamma stability "),
-                                                                      size = 20, face = "bold", just = "left", hjust = 0.68)),
-                                      annotate_figure(fig_4b, top = text_grob(paste("(b) Biodiversity–stability relationships for alpha stability "),
-                                                                      size = 20, face = "bold", just = "left", hjust = 0.7)),
-                                      annotate_figure(fig_4c, top = text_grob(paste("(c) Biodiversity-synchrony relationships for spatial synchrony among plots "),
-                                                                      size = 20, face = "bold", just = "left", hjust = 0.525)),
-                                      heights = c(1, 1, 1)),
-       width = 12, height = 20, dpi = 1000)
+# ggsave("Figure 4.pdf", grid.arrange(annotate_figure(fig_4a, top = text_grob(paste("(a) Biodiversity–stability relationships for gamma stability "),
+#                                                                       size = 20, face = "bold", just = "left", hjust = 0.68)),
+#                                       annotate_figure(fig_4b, top = text_grob(paste("(b) Biodiversity–stability relationships for alpha stability "),
+#                                                                       size = 20, face = "bold", just = "left", hjust = 0.7)),
+#                                       annotate_figure(fig_4c, top = text_grob(paste("(c) Biodiversity-synchrony relationships for spatial synchrony among plots "),
+#                                                                       size = 20, face = "bold", just = "left", hjust = 0.525)),
+#                                       heights = c(1, 1, 1)),
+#        width = 12, height = 20, dpi = 1000)
 
 
-
-
-
-
-## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix## Appendix
-##############################################################################################################
-# ========================================================================================================== #
-# Figure S4 Relationships between biodiversity and gamma stability, alpha stability, species synchrony and asynchrony across three time periods
-
-
-
-
-# library(devtools)
-# install_github("chengjr1009/iStay")
-
-library(iSTAY)
-library(tidyverse)
-library(lmerTest)
-
-# Jena LMM ----------------------------------------------------------------
-
-data("Data_Jena_hierarchical_structure")
-data("Data_Jena_462_populations")
-data("Data_Jena_20_metacommunities")
-data("Data_Jena_76_metapopulations")
-
-multi_gamma_diffk <- function(data, blocksowndiv) {
-  
-  # List of functions to iterate
-  stability_functions <- list(
-    E3_Routledge = iSTAY_Multiple
-  )
-  
-  # Initialize empty data.frames for final results
-  combined_total_fit <- data.frame()
-  combined_part_fit <- data.frame()
-  combined_slope_text <- data.frame()
-  combined_plotdata <- data.frame()
-  
-  for (method_name in names(stability_functions)) {
-    method_func <- stability_functions[[method_name]]
-    
-    # Stability data for current method
-    # stability_data <- method_func(data, order.q = c(0.3, 0.7, 1, 2))
-    stability_data <- method_func(data, order.q = c(0.5, 1, 2))
-    
-    # Base plotdata for this method
-    plotdata <- data.frame(
-      block = rep(blocksowndiv$block, 3),
-      sowndiv = rep(blocksowndiv$sowndiv, 3),
-      gamma = c(stability_data[, 3]),
-      version = factor(rep(c("q = 0.5", "q = 1", "q = 2"), each = nrow(blocksowndiv))),
-      Class = gsub("_.*", "", method_name),
-      Method = gsub(".*_", "", method_name)
-    )
-    
-    # Loop over each version to fit LMMs separately
-    for (v in levels(plotdata$version)) {
-      subdata <- filter(plotdata, version == v)
-      
-      # Linear mixed-effects model
-      model <- lmerTest::lmer(gamma ~ 1 + sowndiv + (1 + sowndiv | block), data = subdata)
-      summary_model <- summary(model)
-      
-      # Add predictions and significance
-      subdata$predicted <- predict(model, newdata = subdata, re.form = NA)
-      subdata$significance <- ifelse(summary_model$coefficients[2, 5] < 0.05, "significant", "non-significant")
-      subdata$sign <- ifelse(summary_model$coefficients[2, 1] > 0, "positive", "negative")
-      
-      # Add slope and intercepts for blocks
-      slopes <- coef(model)$block
-      slope_intercept <- data.frame(
-        block = rownames(slopes),
-        intercept = slopes[, 1],
-        slope = slopes[, 2],
-        x_min = tapply(subdata$sowndiv, subdata$block, min),
-        x_max = tapply(subdata$sowndiv, subdata$block, max),
-        version = rep(v,4),
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Add slope text for visualization
-      slope_text_metric <- data.frame(
-        block = c(rownames(slopes), "Total"),
-        slope_text = c(paste0("slope = ", sprintf("%.4f", slopes[, 2])), paste0("slpoe = ", sprintf("%.4f", summary_model$coefficients[2, 1]))),
-        version = v,
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Append to combined results
-      combined_total_fit <- rbind(combined_total_fit, subdata)
-      combined_part_fit <- rbind(combined_part_fit, slope_intercept)
-      combined_slope_text <- rbind(combined_slope_text, slope_text_metric)
-    }
-    
-    # Append the overall plotdata for this method
-    combined_plotdata <- rbind(combined_plotdata, plotdata)
-  }
-  
-  # Return combined results as a list of 4 data.frames
-  return(list(
-    total_fit = combined_total_fit,
-    part_fit = combined_part_fit,
-    slope_text = combined_slope_text,
-    plotdata = combined_plotdata
-  ))
-}
-
-multi_alpha_diffk <- function(data, blocksowndiv) {
-  
-  # List of functions to iterate
-  stability_functions <- list(
-    E3_Routledge = iSTAY_Multiple
-  )
-  
-  # Initialize empty data.frames for final results
-  combined_total_fit <- data.frame()
-  combined_part_fit <- data.frame()
-  combined_slope_text <- data.frame()
-  combined_plotdata <- data.frame()
-  
-  for (method_name in names(stability_functions)) {
-    method_func <- stability_functions[[method_name]]
-    
-    # Stability data for current method
-    stability_data <- method_func(data, order.q = c(0.5, 1, 2))
-    
-    # Base plotdata for this method
-    plotdata <- data.frame(
-      block = rep(blocksowndiv$block, 3),
-      sowndiv = rep(blocksowndiv$sowndiv, 3),
-      alpha = c(stability_data[, 4]),
-      version = factor(rep(c("q = 0.5", "q = 1", "q = 2"), each = nrow(blocksowndiv))),
-      Class = gsub("_.*", "", method_name),
-      Method = gsub(".*_", "", method_name)
-    )
-    
-    # Loop over each version to fit LMMs separately
-    for (v in levels(plotdata$version)) {
-      subdata <- filter(plotdata, version == v)
-      
-      # Linear mixed-effects model
-      model <- lmerTest::lmer(alpha ~ 1 + sowndiv + (1 + sowndiv | block), data = subdata)
-      summary_model <- summary(model)
-      
-      # Add predictions and significance
-      subdata$predicted <- predict(model, newdata = subdata, re.form = NA)
-      subdata$significance <- ifelse(summary_model$coefficients[2, 5] < 0.05, "significant", "non-significant")
-      subdata$sign <- ifelse(summary_model$coefficients[2, 1] > 0, "positive", "negative")
-      
-      # Add slope and intercepts for blocks
-      slopes <- coef(model)$block
-      slope_intercept <- data.frame(
-        block = rownames(slopes),
-        intercept = slopes[, 1],
-        slope = slopes[, 2],
-        x_min = tapply(subdata$sowndiv, subdata$block, min),
-        x_max = tapply(subdata$sowndiv, subdata$block, max),
-        version = rep(v, 4),
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Add slope text for visualization
-      slope_text_metric <- data.frame(
-        block = c(rownames(slopes), "Total"),
-        slope_text = c(paste0("slope = ", sprintf("%.4f", slopes[, 2])), paste0("slpoe = ", sprintf("%.4f", summary_model$coefficients[2, 1]))),
-        version = v,
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Append to combined results
-      combined_total_fit <- rbind(combined_total_fit, subdata)
-      combined_part_fit <- rbind(combined_part_fit, slope_intercept)
-      combined_slope_text <- rbind(combined_slope_text, slope_text_metric)
-    }
-    
-    # Append the overall plotdata for this method
-    combined_plotdata <- rbind(combined_plotdata, plotdata)
-  }
-  
-  # Return combined results as a list of 4 data.frames
-  return(list(
-    total_fit = combined_total_fit,
-    part_fit = combined_part_fit,
-    slope_text = combined_slope_text,
-    plotdata = combined_plotdata
-  ))
-}
-
-multi_beta_diffk <- function(data, blocksowndiv) {
-  
-  # List of functions to iterate
-  stability_functions <- list(
-    E3_Routledge = iSTAY_Multiple
-  )
-  
-  # Initialize empty data.frames for final results
-  combined_total_fit <- data.frame()
-  combined_part_fit <- data.frame()
-  combined_slope_text <- data.frame()
-  combined_plotdata <- data.frame()
-  
-  for (method_name in names(stability_functions)) {
-    method_func <- stability_functions[[method_name]]
-    
-    # Stability data for current method
-    stability_data <- method_func(data, order.q = c(0.5, 1, 2))
-    
-    # Base plotdata for this method
-    plotdata <- data.frame(
-      block = rep(blocksowndiv$block, 3),
-      sowndiv = rep(blocksowndiv$sowndiv, 3),
-      beta = c(stability_data[, 5]),
-      version = factor(rep(c("q = 0.5", "q = 1", "q = 2"), each = nrow(blocksowndiv))),
-      Class = gsub("_.*", "", method_name),
-      Method = gsub(".*_", "", method_name)
-    )
-    
-    # Loop over each version to fit LMMs separately
-    for (v in levels(plotdata$version)) {
-      subdata <- filter(plotdata, version == v)
-      
-      # Linear mixed-effects model
-      model <- lmerTest::lmer(beta ~ 1 + sowndiv + (1 + sowndiv | block), data = subdata)
-      summary_model <- summary(model)
-      
-      # Add predictions and significance
-      subdata$predicted <- predict(model, newdata = subdata, re.form = NA)
-      subdata$significance <- ifelse(summary_model$coefficients[2, 5] < 0.05, "significant", "non-significant")
-      subdata$sign <- ifelse(summary_model$coefficients[2, 1] > 0, "positive", "negative")
-      
-      # Add slope and intercepts for blocks
-      slopes <- coef(model)$block
-      slope_intercept <- data.frame(
-        block = rownames(slopes),
-        intercept = slopes[, 1],
-        slope = slopes[, 2],
-        x_min = tapply(subdata$sowndiv, subdata$block, min),
-        x_max = tapply(subdata$sowndiv, subdata$block, max),
-        version = rep(v, 4),
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Add slope text for visualization
-      slope_text_metric <- data.frame(
-        block = c(rownames(slopes), "Total"),
-        slope_text = c(paste0("slope = ", sprintf("%.4f", slopes[, 2])), paste0("slpoe = ", sprintf("%.4f", summary_model$coefficients[2, 1]))),
-        version = v,
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Append to combined results
-      combined_total_fit <- rbind(combined_total_fit, subdata)
-      combined_part_fit <- rbind(combined_part_fit, slope_intercept)
-      combined_slope_text <- rbind(combined_slope_text, slope_text_metric)
-    }
-    
-    # Append the overall plotdata for this method
-    combined_plotdata <- rbind(combined_plotdata, plotdata)
-  }
-  
-  # Return combined results as a list of 4 data.frames
-  return(list(
-    total_fit = combined_total_fit,
-    part_fit = combined_part_fit,
-    slope_text = combined_slope_text,
-    plotdata = combined_plotdata
-  ))
-}
-
-multi_syn_diffk <- function(data, blocksowndiv) {
-  
-  # List of functions to iterate
-  stability_functions <- list(
-    E3_Routledge = iSTAY_Multiple
-  )
-  
-  # Initialize empty data.frames for final results
-  combined_total_fit <- data.frame()
-  combined_part_fit <- data.frame()
-  combined_slope_text <- data.frame()
-  combined_plotdata <- data.frame()
-  
-  for (method_name in names(stability_functions)) {
-    method_func <- stability_functions[[method_name]]
-    
-    # Stability data for current method
-    stability_data <- method_func(data, order.q = c(0.5, 1, 2))
-    
-    # Base plotdata for this method
-    plotdata <- data.frame(
-      block = rep(blocksowndiv$block, 3),
-      sowndiv = rep(blocksowndiv$sowndiv, 3),
-      Synchrony = c(stability_data[, 6]),
-      version = factor(rep(c("q = 0.5", "q = 1", "q = 2"), each = nrow(blocksowndiv))),
-      Class = gsub("_.*", "", method_name),
-      Method = gsub(".*_", "", method_name)
-    )
-    
-    # Loop over each version to fit LMMs separately
-    for (v in levels(plotdata$version)) {
-      subdata <- filter(plotdata, version == v)
-      
-      # Linear mixed-effects model
-      model <- lmerTest::lmer(Synchrony ~ 1 + sowndiv + (1 + sowndiv | block), data = subdata)
-      summary_model <- summary(model)
-      
-      # Add predictions and significance
-      subdata$predicted <- predict(model, newdata = subdata, re.form = NA)
-      subdata$significance <- ifelse(summary_model$coefficients[2, 5] < 0.05, "significant", "non-significant")
-      subdata$sign <- ifelse(summary_model$coefficients[2, 1] > 0, "positive", "negative")
-      
-      # Add slope and intercepts for blocks
-      slopes <- coef(model)$block
-      slope_intercept <- data.frame(
-        block = rownames(slopes),
-        intercept = slopes[, 1],
-        slope = slopes[, 2],
-        x_min = tapply(subdata$sowndiv, subdata$block, min),
-        x_max = tapply(subdata$sowndiv, subdata$block, max),
-        version = rep(v,4),
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Add slope text for visualization
-      slope_text_metric <- data.frame(
-        block = c(rownames(slopes), "Total"),
-        slope_text = c(paste0("slope = ", sprintf("%.4f", slopes[, 2])), paste0("slpoe = ", sprintf("%.4f", summary_model$coefficients[2, 1]))),
-        version = v,
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Append to combined results
-      combined_total_fit <- rbind(combined_total_fit, subdata)
-      combined_part_fit <- rbind(combined_part_fit, slope_intercept)
-      combined_slope_text <- rbind(combined_slope_text, slope_text_metric)
-    }
-    
-    # Append the overall plotdata for this method
-    combined_plotdata <- rbind(combined_plotdata, plotdata)
-  }
-  
-  # Return combined results as a list of 4 data.frames
-  return(list(
-    total_fit = combined_total_fit,
-    part_fit = combined_part_fit,
-    slope_text = combined_slope_text,
-    plotdata = combined_plotdata
-  ))
-}
-
-multi_asyn_diffk <- function(data, blocksowndiv) {
-  
-  # List of functions to iterate
-  stability_functions <- list(
-    E3_Routledge = iSTAY_Multiple
-  )
-  
-  # Initialize empty data.frames for final results
-  combined_total_fit <- data.frame()
-  combined_part_fit <- data.frame()
-  combined_slope_text <- data.frame()
-  combined_plotdata <- data.frame()
-  
-  for (method_name in names(stability_functions)) {
-    method_func <- stability_functions[[method_name]]
-    
-    # Stability data for current method
-    stability_data <- method_func(data, order.q = c(0.5, 1, 2))
-    
-    # Base plotdata for this method
-    plotdata <- data.frame(
-      block = rep(blocksowndiv$block, 3),
-      sowndiv = rep(blocksowndiv$sowndiv, 3),
-      Asynchrony = 1 - c(stability_data[, 6]),
-      version = factor(rep(c("q = 0.5", "q = 1", "q = 2"), each = nrow(blocksowndiv))),
-      Class = gsub("_.*", "", method_name),
-      Method = gsub(".*_", "", method_name)
-    )
-    
-    # Loop over each version to fit LMMs separately
-    for (v in levels(plotdata$version)) {
-      subdata <- filter(plotdata, version == v)
-      
-      # Linear mixed-effects model
-      model <- lmerTest::lmer(Asynchrony ~ 1 + sowndiv + (1 + sowndiv | block), data = subdata)
-      summary_model <- summary(model)
-      
-      # Add predictions and significance
-      subdata$predicted <- predict(model, newdata = subdata, re.form = NA)
-      subdata$significance <- ifelse(summary_model$coefficients[2, 5] < 0.05, "significant", "non-significant")
-      subdata$sign <- ifelse(summary_model$coefficients[2, 1] > 0, "positive", "negative")
-      
-      # Add slope and intercepts for blocks
-      slopes <- coef(model)$block
-      slope_intercept <- data.frame(
-        block = rownames(slopes),
-        intercept = slopes[, 1],
-        slope = slopes[, 2],
-        x_min = tapply(subdata$sowndiv, subdata$block, min),
-        x_max = tapply(subdata$sowndiv, subdata$block, max),
-        version = rep(v,4),
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Add slope text for visualization
-      slope_text_metric <- data.frame(
-        block = c(rownames(slopes), "Total"),
-        slope_text = c(paste0("slope = ", sprintf("%.4f", slopes[, 2])), paste0("slpoe = ", sprintf("%.4f", summary_model$coefficients[2, 1]))),
-        version = v,
-        Class = gsub("_.*", "", method_name),
-        Method = gsub(".*_", "", method_name)
-      )
-      
-      # Append to combined results
-      combined_total_fit <- rbind(combined_total_fit, subdata)
-      combined_part_fit <- rbind(combined_part_fit, slope_intercept)
-      combined_slope_text <- rbind(combined_slope_text, slope_text_metric)
-    }
-    
-    # Append the overall plotdata for this method
-    combined_plotdata <- rbind(combined_plotdata, plotdata)
-  }
-  
-  # Return combined results as a list of 4 data.frames
-  return(list(
-    total_fit = combined_total_fit,
-    part_fit = combined_part_fit,
-    slope_text = combined_slope_text,
-    plotdata = combined_plotdata
-  ))
-}
-
-
-# 10yr window -------------------------------------------------------------
-
-struct_plot <- data.frame(plot = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 1),
-                          block = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 2),
-                          sowndiv = as.numeric(map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 3)))
-
-blocksowndiv_spe <- struct_plot |> select(block, sowndiv)
-colnames(blocksowndiv_spe) <- c("block", "sowndiv")
-blocksowndiv_spe$sowndiv <- log2(as.numeric(blocksowndiv_spe$sowndiv))
-
-# 10yr 3set ---------------------------------------------------------------
-
-struct_plot <- data.frame(plot = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 1),
-                          block = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 2),
-                          sowndiv = as.numeric(map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 3)))
-
-blocksowndiv_spe <- struct_plot |> select(block, sowndiv)
-colnames(blocksowndiv_spe) <- c("block", "sowndiv")
-blocksowndiv_spe$sowndiv <- log2(as.numeric(blocksowndiv_spe$sowndiv))
-
-# Community Stability(76) ----------------------------------------------------
-
-valid_start_years <- c(2005, 2010, 2015)
-year_windows <- lapply(valid_start_years, function(start_year) {
-  years <- start_year:(start_year + 9)
-  if (start_year == 2003) {
-    years <- c(2003, 2005:2013)
-  } else if (2004 %in% years) {
-    return(NULL)
-  }
-  return(as.character(years))
-})
-year_windows <- Filter(Negate(is.null), year_windows)
-
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_gamma_diffk(Data_Jena_76_metapopulations_10, blocksowndiv_spe)
-  return(out)
-})
-
-year_labels <- sapply(year_windows, function(yrs){
-  paste0(min(yrs), "-", max(yrs))
-})
-
-plotdata_text1 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata1 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata1$significance <- factor(plotdata1$significance, levels = c("significant", "non-significant"))
-
-if(!any(plotdata1$significance == "non-significant")) {
-  dummy <- plotdata1[1, ]  # 以第一列為範例
-  dummy$sowndiv <- NA      # 可以設定為 NA 或適當的數值
-  dummy$predicted <- NA
-  dummy$gamma <- NA
-  dummy$significance <- "non-significant"
-  plotdata1 <- rbind(plotdata1, dummy)
-}
-
-ggplot() +
-  geom_point(data = plotdata1,
-             aes(x = sowndiv, y = gamma, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata1,
-            aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text1,
-            aes(x = 2.5, y = 0.25, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","#faa307")) +
-  scale_linetype_manual(values = c("solid", "dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(0, 1, 2, 3, 4), label = c(1, 2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype="", x = "Number of species (log2 scale)", y = "Community stability") + 
-  theme_bw() +
-  theme(legend.position = "bottom", 
-        axis.title = element_text(size = 13),
-        legend.box.margin = unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        axis.text = element_text(size = 16),
-        text = element_text(size = 14), 
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
-
-# ggsave("Community stability 0512.png", width = 9.5, height = 5)
-
-
-# Population Stability(76) -----------------------------------------------------
-
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_alpha_diffk(Data_Jena_76_metapopulations_10, blocksowndiv_spe)
-  return(out)
-})
-
-plotdata_text2 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata2 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata2 <- plotdata2 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
-plotdata2$significance <- factor(plotdata2$significance, levels = c("significant", "non-significant"))
-
-ggplot()+
-  geom_point(data = plotdata2,
-             aes(x = sowndiv, y = alpha, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata2, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text2,
-            aes(x = 2.5, y = 0.8, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","#faa307")) +
-  scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(0, 1, 2, 3, 4), labels = c(1, 2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype = "", x = "Number of species (log2 scale)", y = "Population stability") + theme_bw()+
-  theme(legend.position="bottom", 
-        # axis.text=element_text(size=10), 
-        axis.title=element_text(size=13),
-        legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        text = element_text(size = 14), 
-        axis.text = element_text(size = 16),
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
-
-# ggsave("Population stability 0512.png", width = 9.5, height = 5)
-
-# Beta(76) -----------------------------------------------------------
-
-names <- struct_plot |> 
-  filter(sowndiv != 1) |> 
-  mutate(names = paste0(plot, "_", block, "_", sowndiv)) |> 
-  select(names) |> unlist()
-
-blocksowndiv_spe2 <- struct_plot |> filter(sowndiv != 1) |> select(block, sowndiv)
-colnames(blocksowndiv_spe2) <- c("block", "sowndiv")
-blocksowndiv_spe2$sowndiv <- log2(as.numeric(blocksowndiv_spe2$sowndiv))
-
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_beta_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-  return(out)
-})
-
-plotdata_text3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- plotdata3 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
-plotdata3$significance <- factor(plotdata3$significance, levels = c("significant", "non-significant"))
-
-
-ggplot() +
-  geom_point(data = plotdata3, 
-             aes(x = sowndiv, y = beta, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata3, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text3,
-            aes(x = 2.55, y = 0.545, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","#faa307")) +
-  scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(1, 2, 3, 4), labels = c(2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype = "", x = "Number of species (log2 scale)", y = "Beta stability") + 
-  theme_bw() +
-  theme(legend.position = "bottom", 
-        # axis.text=element_text(size=10),
-        axis.title=element_text(size=13),
-        legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        # legend.margin = margin(0, 0, 0, 0),
-        # legend.box.margin = margin(-10, -10, -5, -10), 
-        text = element_text(size = 14), 
-        # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-        axis.text = element_text(size = 16),
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
-
-# ggsave("Population Beta 0512.png", width = 9.5, height = 5)
-
-
-# Synchroy (76) -----------------------------------------------------------
-
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_syn_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-  return(out)
-})
-
-plotdata_text3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- plotdata3 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
-plotdata3$significance <- factor(plotdata3$significance, levels = c("significant", "non-significant"))
-
-
-ggplot() +
-  geom_point(data = plotdata3, 
-             aes(x = sowndiv, y = Synchrony, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata3, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text3,
-            aes(x = 2.5, y = 0.135, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","#faa307")) +
-  scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(1, 2, 3, 4), labels = c(2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype = "", x = "Number of species (log2 scale)", y = "Population synchrony") + 
-  theme_bw() +
-  theme(legend.position = "bottom", 
-        # axis.text=element_text(size=10),
-        axis.title=element_text(size=13),
-        legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        # legend.margin = margin(0, 0, 0, 0),
-        # legend.box.margin = margin(-10, -10, -5, -10), 
-        text = element_text(size = 14), 
-        # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-        axis.text = element_text(size = 16),
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
-
-# ggsave("Population Synchrony 0512.png", width = 9.5, height = 5)
-
-# Asynchrony(76) ----------------------------------------------------------
-
-Jena_10yr_window_result <- lapply(year_windows, function(years){
-  Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-    sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-    sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-    sub_df
-  })
-  names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-  out <- multi_asyn_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-  return(out)
-})
-
-plotdata_text3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$slope_text |>
-    filter(block == "Total") |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-  Jena_10yr_window_result[[i]]$total_fit |>
-    mutate(year = year_labels[i])
-}))
-
-plotdata3 <- plotdata3 |> mutate(sign = factor(sign, levels = c("positive", "negative")))
-plotdata3$significance <- factor(plotdata3$significance, levels = c("significant", "non-significant"))
-
-
-ggplot() +
-  geom_point(data = plotdata3, 
-             aes(x = sowndiv, y = Asynchrony, color = year), size = 2, alpha = 0.3, show.legend = FALSE) +
-  geom_line(data = plotdata3, aes(x = sowndiv, y = predicted, linetype = significance, color = year), linewidth = 1.2) +
-  geom_text(data = plotdata_text3,
-            aes(x = 3, y = 0.115, label = slope_text, color = year,
-                hjust = rep(-c(0,0,0), 3),
-                vjust = c(rep(c(-2, 0, 2), each = 3))), size = 3.5, show.legend = FALSE) +
-  scale_color_manual(values = c("#EA0000","#0066CC","#faa307")) +
-  scale_linetype_manual(values = c("solid","dashed"), drop = FALSE, labels = c("Significant", "Non-significant")) +
-  scale_x_continuous(breaks = c(1, 2, 3, 4), labels = c(2, 4, 8, 16)) +
-  facet_grid(~ version) +
-  guides(linetype = guide_legend(keywidth = 3.1)) +
-  labs(linetype = "", x = "Number of species (log2 scale)", y = "Population asynchrony") + 
-  theme_bw() +
-  theme(legend.position = "bottom", 
-        # axis.text=element_text(size=10),
-        axis.title=element_text(size=13),
-        legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(), 
-        # legend.margin = margin(0, 0, 0, 0),
-        # legend.box.margin = margin(-10, -10, -5, -10), 
-        text = element_text(size = 14), 
-        # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-        axis.text = element_text(size = 16),
-        strip.text.x = element_text(size = 14),
-        strip.text.y = element_text(size = 14),
-        axis.title.x = element_text(hjust = 0.5, size = 14),
-        axis.title.y = element_text(hjust = 0.5, size = 14))
-
-# ggsave("Population Asynchrony 0512.png", width = 9.5, height = 5)
-
-
-
-# # Effect time relationship ------------------------------------------------
-# 
-# struct_plot <- data.frame(plot = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 1),
-#                           block = map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 2),
-#                           sowndiv = as.numeric(map_chr(names(Data_Jena_76_metapopulations) |> str_split("_"), 3)))
-# 
-# blocksowndiv_spe <- struct_plot |> select(block, sowndiv)
-# colnames(blocksowndiv_spe) <- c("block", "sowndiv")
-# blocksowndiv_spe$sowndiv <- log2(as.numeric(blocksowndiv_spe$sowndiv))
-# 
-# # Community Stability(76) ----------------------------------------------------
-# 
-# valid_start_years <- c(2003, 2005:2015)
-# year_windows <- lapply(valid_start_years, function(start_year) {
-#   years <- start_year:(start_year + 9)
-#   if (start_year == 2003) {
-#     years <- c(2003, 2005:2013)
-#   } else if (2004 %in% years) {
-#     return(NULL)
-#   }
-#   return(as.character(years))
-# })
-# year_windows <- Filter(Negate(is.null), year_windows)
-# 
-# Jena_10yr_window_result <- lapply(year_windows, function(years){
-#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-#     sub_df
-#   })
-#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-#   out <- multi_gamma_diffk(Data_Jena_76_metapopulations_10, blocksowndiv_spe)
-#   return(out)
-# })
-# 
-# year_labels <- sapply(year_windows, function(yrs){
-#   paste0(min(yrs), "-", max(yrs))
-# })
-# year_labels[1] <- "2003, 2005-2013"
-# 
-# slope <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-#   Jena_10yr_window_result[[i]]$slope_text |>
-#     filter(block == "Total") |> 
-#     mutate(year = year_labels[i],
-#            starting_year = valid_start_years[i],
-#            slope_num = parse_number(slope_text))
-# }))
-# 
-# slope |> 
-#   ggplot() +
-#   geom_line(aes(x = starting_year, y = slope_num, color = version, linetype = version), linewidth = 1) +
-#   geom_point(aes(x = starting_year, y = slope_num, color = version), size = 3) +
-#   scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
-#   scale_color_manual(values = c("#386641", "#6a994e", "#a7c957")) +
-#   labs(y = "Effect of species richness", x = "Starting year of sliding 10-year windows") +
-#   guides(linetype = guide_legend(keywidth = 3.1)) +
-#   theme_bw() +
-#   theme(legend.position = "bottom", 
-#         # axis.text=element_text(size=10),
-#         axis.title=element_text(size=13),
-#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank(), 
-#         # legend.margin = margin(0, 0, 0, 0),
-#         # legend.box.margin = margin(-10, -10, -5, -10), 
-#         text = element_text(size = 14), 
-#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-#         axis.text = element_text(size = 16),
-#         strip.text.x = element_text(size = 14),
-#         strip.text.y = element_text(size = 14),
-#         axis.title.x = element_text(hjust = 0.5, size = 14),
-#         axis.title.y = element_text(hjust = 0.5, size = 14))
-# 
-# # ggsave("Effect of diversity on community stability.png", width = 8, height = 6)
-# 
-# 
-# # Alpha -------------------------------------------------------------------
-# 
-# Jena_10yr_window_result <- lapply(year_windows, function(years){
-#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-#     sub_df
-#   })
-#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-#   out <- multi_alpha_diffk(Data_Jena_76_metapopulations_10, blocksowndiv_spe)
-#   return(out)
-# })
-# 
-# slope <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-#   Jena_10yr_window_result[[i]]$slope_text |>
-#     filter(block == "Total") |> 
-#     mutate(year = year_labels[i],
-#            starting_year = valid_start_years[i],
-#            slope_num = parse_number(slope_text))
-# }))
-# 
-# slope |> 
-#   ggplot() +
-#   geom_line(aes(x = starting_year, y = (slope_num), color = version, linetype = version), linewidth = 1) +
-#   geom_point(aes(x = starting_year, y = slope_num, color = version), size = 3) +
-#   scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
-#   scale_color_manual(values = c("#386641", "#6a994e", "#a7c957")) +
-#   labs(y = "Effect of species richness", x = "Starting year of sliding 10-year windows") +
-#   guides(linetype = guide_legend(keywidth = 3.1)) +
-#   theme_bw() +
-#   theme(legend.position = "bottom", 
-#         # axis.text=element_text(size=10),
-#         axis.title=element_text(size=13),
-#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank(), 
-#         # legend.margin = margin(0, 0, 0, 0),
-#         # legend.box.margin = margin(-10, -10, -5, -10), 
-#         text = element_text(size = 14), 
-#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-#         axis.text = element_text(size = 16),
-#         strip.text.x = element_text(size = 14),
-#         strip.text.y = element_text(size = 14),
-#         axis.title.x = element_text(hjust = 0.5, size = 14),
-#         axis.title.y = element_text(hjust = 0.5, size = 14))
-# 
-# # ggsave("Effect of diversity on population stability.png", width = 8, height = 6)
-# 
-# # Beta -------------------------------------------------------------------
-# 
-# Jena_10yr_window_result <- lapply(year_windows, function(years){
-#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-#     sub_df
-#   })
-#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-#   out <- multi_beta_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-#   return(out)
-# })
-# 
-# slope <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-#   Jena_10yr_window_result[[i]]$slope_text |>
-#     filter(block == "Total") |> 
-#     mutate(year = year_labels[i],
-#            starting_year = valid_start_years[i],
-#            slope_num = parse_number(slope_text))
-# }))
-# 
-# slope |> 
-#   ggplot() +
-#   geom_line(aes(x = starting_year, y = (slope_num), color = version, linetype = version), linewidth = 1) +
-#   geom_point(aes(x = starting_year, y = slope_num, color = version), size = 3) +
-#   scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
-#   scale_color_manual(values = c("#386641", "#6a994e", "#a7c957")) +
-#   labs(y = "Effect of species richness", x = "Starting year of sliding 10-year windows") +
-#   guides(linetype = guide_legend(keywidth = 3.1)) +
-#   theme_bw() +
-#   theme(legend.position = "bottom", 
-#         # axis.text=element_text(size=10),
-#         axis.title=element_text(size=13),
-#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank(), 
-#         # legend.margin = margin(0, 0, 0, 0),
-#         # legend.box.margin = margin(-10, -10, -5, -10), 
-#         text = element_text(size = 14), 
-#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-#         axis.text = element_text(size = 16),
-#         strip.text.x = element_text(size = 14),
-#         strip.text.y = element_text(size = 14),
-#         axis.title.x = element_text(hjust = 0.5, size = 14),
-#         axis.title.y = element_text(hjust = 0.5, size = 14))
-# 
-# # ggsave("Effect of diversity on beta stability.png", width = 8, height = 6)
-# 
-# 
-# # Synchrony -------------------------------------------------------------------
-# 
-# Jena_10yr_window_result <- lapply(year_windows, function(years){
-#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-#     sub_df
-#   })
-#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-#   out <- multi_syn_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-#   return(out)
-# })
-# 
-# slope <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-#   Jena_10yr_window_result[[i]]$slope_text |>
-#     filter(block == "Total") |> 
-#     mutate(year = year_labels[i],
-#            starting_year = valid_start_years[i],
-#            slope_num = parse_number(slope_text))
-# }))
-# 
-# slope |> 
-#   ggplot() +
-#   geom_line(aes(x = starting_year, y = (slope_num), color = version, linetype = version), linewidth = 1) +
-#   geom_point(aes(x = starting_year, y = slope_num, color = version), size = 3) +
-#   scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
-#   scale_color_manual(values = c("#386641", "#6a994e", "#a7c957")) +
-#   labs(y = "Effect of species richness", x = "Starting year of sliding 10-year windows") +
-#   guides(linetype = guide_legend(keywidth = 3.1)) +
-#   theme_bw() +
-#   theme(legend.position = "bottom", 
-#         # axis.text=element_text(size=10),
-#         axis.title=element_text(size=13),
-#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank(), 
-#         # legend.margin = margin(0, 0, 0, 0),
-#         # legend.box.margin = margin(-10, -10, -5, -10), 
-#         text = element_text(size = 14), 
-#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-#         axis.text = element_text(size = 16),
-#         strip.text.x = element_text(size = 14),
-#         strip.text.y = element_text(size = 14),
-#         axis.title.x = element_text(hjust = 0.5, size = 14),
-#         axis.title.y = element_text(hjust = 0.5, size = 14))
-# 
-# # ggsave("Effect of diversity on population synchrony.png", width = 8, height = 6)
-# 
-# 
-# 
-# # Asynchrony -------------------------------------------------------------------
-# 
-# Jena_10yr_window_result <- lapply(year_windows, function(years){
-#   Data_Jena_76_metapopulations_10 <- lapply(Data_Jena_76_metapopulations, function(df){
-#     sub_df <- df[, years, drop = FALSE]      # 取出這個 window 的欄位
-#     sub_df[sub_df == 0] <- 1e-15             # 把 0 換成 10^(-15)
-#     sub_df
-#   })
-#   names(Data_Jena_76_metapopulations_10) <- names(Data_Jena_76_metapopulations)
-#   out <- multi_asyn_diffk(Data_Jena_76_metapopulations_10[names], blocksowndiv_spe2)
-#   return(out)
-# })
-# 
-# slope <- do.call(rbind, lapply(seq_along(Jena_10yr_window_result), function(i){
-#   Jena_10yr_window_result[[i]]$slope_text |>
-#     filter(block == "Total") |> 
-#     mutate(year = year_labels[i],
-#            starting_year = valid_start_years[i],
-#            slope_num = parse_number(slope_text))
-# }))
-# 
-# slope |> 
-#   ggplot() +
-#   geom_line(aes(x = starting_year, y = slope_num, color = version, linetype = version), linewidth = 1) +
-#   geom_point(aes(x = starting_year, y = slope_num, color = version), size = 3) +
-#   scale_x_continuous(breaks = c(2003, 2005, 2007, 2009, 2011, 2013, 2015)) +
-#   scale_color_manual(values = c("#386641", "#6a994e", "#a7c957")) +
-#   labs(y = "Effect of species richness", x = "Starting year of sliding 10-year windows") +
-#   guides(linetype = guide_legend(keywidth = 3.1)) +
-#   theme_bw() +
-#   theme(legend.position = "bottom", 
-#         # axis.text=element_text(size=10),
-#         axis.title=element_text(size=13),
-#         legend.box.margin=unit(c(0.5,0.5,0.5,0.5), "cm"),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank(), 
-#         # legend.margin = margin(0, 0, 0, 0),
-#         # legend.box.margin = margin(-10, -10, -5, -10), 
-#         text = element_text(size = 14), 
-#         # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-#         axis.text = element_text(size = 16),
-#         strip.text.x = element_text(size = 14),
-#         strip.text.y = element_text(size = 14),
-#         axis.title.x = element_text(hjust = 0.5, size = 14),
-#         axis.title.y = element_text(hjust = 0.5, size = 14))
-# 
-# # ggsave("Effect of diversity on population asynchrony.png", width = 8, height = 6)
-# 
-# 
-# 
-# 
-
-# Weight vs Stab ----------------------------------------------------------
-
-Jena_tidy <- Data_Jena_462_populations |> 
-  mutate(rowname = row.names(Data_Jena_462_populations),
-         block = str_sub(rowname, 1, 2),
-         number_of_species = as.numeric(sub(".*_([0-9]+)_.*", "\\1", rowname)),
-         plot = str_sub(sub(".*_(B[1234]A[0-9]{2})_.*", "\\1", rowname), 3, 5),
-         species = str_sub(rowname, -7, -1),
-         label = paste(block, plot, number_of_species, sep = "_"))
-
-
-gg_alpha_wrt_weight_group_by_species <- function(data = Jena_tidy, q = 1, threshold = 1 / 6){
-  
-  # 這個函數可以輸出每個species的計算stab的斜率和預測值
-  fit_slope <- function(q){
-    
-    temp <- data |> 
-      mutate(total_biomass = rowSums(across(contains("20")))) |> 
-      group_by(label) |> 
-      mutate(weight = total_biomass / sum(total_biomass),
-             Stab = iSTAY_Single(data = across(contains("20")), order.q = q)$Stab,
-             number_of_species = factor(number_of_species),
-             iSTAY_Multiple(data = across(contains("20")), order.q = q)) |> 
-      ungroup() |> 
-      group_by(number_of_species) 
-    
-    temp <- split(temp, temp$number_of_species)
-    
-    result1 <- lapply(temp, function(x) {
-      
-      summary_model <- lm(Stab ~ weight, data = x) |> summary()
-      data.frame(number_of_species = unique(x$number_of_species),
-                 Slope = tryCatch({
-                   summary_model$coefficients["weight", "Estimate"]
-                 }, error = function(e) {
-                   NA 
-                 }),
-                 p.value = tryCatch({
-                   summary_model$coefficients["weight", "Pr(>|t|)"]
-                 }, error = function(e) {
-                   NA 
-                 })) |> 
-        mutate(Significant = if_else(p.value < 0.05, "Yes", "No"))
-      
-    }) |> map_df(~.x)
-    
-    result2 <- lapply(temp, function(x) {
-      
-      model <- lm(Stab ~ weight, data = x)
-      predictions <- predict(model, newdata = x |> select(weight, Stab))
-      data.frame(number_of_species = unique(x$number_of_species),
-                 weight = x$weight,
-                 predicted = predictions)
-      
-    }) |> map_df(~.x) |> 
-      remove_rownames()
-    
-    list(result1 = result1, result2 = result2)
-    
-  }
-  
-  # 這邊是在篩選weight大但是stab小的
-  # 將每個plot的weight由大排到小，如果stab小於mean_alpha則選取
-  # 但是更好的做法應該是，選取每個plot每個物種的stab小於alpha，老師問再改
-  temp <- data |> 
-    mutate(total_biomass = rowSums(across(contains("20")))) |> 
-    group_by(label) |> 
-    mutate(weight = total_biomass / sum(total_biomass),
-           Stab = iSTAY_Single(data = across(contains("20")), order.q = q)$Stab,
-           number_of_species = factor(number_of_species),
-           iSTAY_Multiple(data = across(contains("20")), order.q = q)) |>
-    ungroup() |> 
-    group_by(number_of_species) |> 
-    mutate(mean_Alpha = mean(Alpha),
-           number_of_species = factor(number_of_species, levels = c(1, 2, 4, 8, 16)))
-  
-  temp_ono <- temp |> 
-    filter(species == "Ono.vic") |> 
-    group_by(number_of_species) |> 
-    mutate(mean_ono = mean(Stab),
-           text = paste0("Mean Ono.Vic = ", sprintf("%.4f", mean_ono)))
-  
-  temp |> 
-    ggplot() +
-    geom_point(aes(x = weight, y = Stab), size = 1, alpha = 0.5) +
-    geom_hline(data = temp_ono, aes(yintercept = mean_ono), linetype = "dashed", linewidth = 1, color = "#F8766D") +
-    geom_point(data = temp |> filter(species == "Ono.vic"), aes(x = weight, y = Stab, color = species), alpha = 0.5, size = 5) +
-    geom_line(data = fit_slope(q = q)[[2]], aes(x = weight, y = predicted, group = number_of_species), color = "#00BFC4", linewidth = 1) +
-    geom_text(data = fit_slope(q = q)[[1]], 
-              aes(x = 0.75, y = 0.09, group = number_of_species, label = paste0("Slope = ", sprintf("%.4f", Slope))), color = "#00BFC4",
-              size = 4, key_glyph = draw_key_path) +
-    geom_text(data = temp_ono, 
-              aes(x = 0.61, y = 0.03, group = number_of_species, label = text), color = "#F8766D",
-              size = 4, key_glyph = draw_key_path) +
-    ylim(c(0, 1.1)) +
-    scale_x_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
-    # labs(title = paste0("q = ", q), x = "Weight", y = "Stability", color = "Speices") +
-    labs(title = paste0("q = ", q), x = "Relative biomass", y = "Stability", color = "Speices") +
-    facet_wrap(~ number_of_species, nrow = 1) +
-    theme_bw() + 
-    theme(legend.position = 'bottom', 
-          legend.text = element_text(size = 12),
-          # legend.title = element_blank(), 
-          legend.margin = margin(0, 0, 0, 0), 
-          # legend.box.margin = margin(-10, -10, -5, -10), 
-          legend.key.width = unit(1, "cm"),
-          text = element_text(size = 14), 
-          panel.spacing = unit(0.75, "lines"),
-          # plot.margin = unit(c(5.5, 5.5, 5.5, 5.5), "pt"),
-          axis.text = element_text(size = 12),
-          strip.text.x = element_text(size = 14),
-          strip.text.y = element_text(size = 14),
-          axis.title.x = element_text(hjust = 0.5, size = 14),
-          axis.title.y = element_text(hjust = 0.5, size = 14))
-  
-}
-
-
-gg_alpha_wrt_weight_group_by_species(data = Jena_tidy |> filter(number_of_species != 1), q = 1, threshold = 1 / 6)
-gg_alpha_wrt_weight_group_by_species(data = Jena_tidy |> filter(number_of_species != 1), q = 2, threshold = 1 / 6)
 
 
 
