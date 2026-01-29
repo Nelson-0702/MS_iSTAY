@@ -153,192 +153,126 @@ grid.arrange(plot_a, plot_b, ncol = 2)
 
 
 
+
 # ==============================================================================
 # Unified Analysis Script: LDM Properties and Synchrony Metrics Comparison
 # 
 # Description:
 # This script consolidates analysis for:
-# 1. The relationship between LDM (Local Dependence Measure) and correlation (rho).
-# 2. Comparison of LDM against entropy-based stability metrics (Hill numbers q=1, q=2)
-#    using simulation and heatmaps.
+# 1. The relationship between LDM (Local Dependence Measure) and correlation (rho)
+#    using theoretical exact values (no simulation).
+# 2. Comparison of LDM against entropy-based stability metrics.
 # ==============================================================================
 
 
-# Set global seed for initial consistency (specific functions may override this)
-set.seed(2026)
 
 # ==============================================================================
-# Reference: Appendix S3_Figure S1.R
+# 1.1 Define Parameters and Theoretical Function
 # ==============================================================================
 
-cat("\n--- Starting Part 1: LDM vs Rho Analysis ---\n")
+# Ratios of Standard Deviations (sigma2 / sigma1)
+ratios <- c(1, 2, 4, 5.8, 8, 16, 32)
 
-# 1.1 Define Functions for Part 1
-# ------------------------------------------------------------------------------
+# Correlation coefficient sequence (x-axis)
+rho_seq <- seq(-1, 1, length.out = 500)
 
-# Function: Calculate LDM for two vectors x and y
-phi_lm <- function(x, y){
-  vx <- var(x)
-  vy <- var(y)
-  cxy <- cov(x, y)
-  # Denominator: (sigma_x + sigma_y)^2
-  den <- vx + vy + 2 * sqrt(vx * vy) 
-  # Numerator: Var(X) + Var(Y) + 2Cov(X,Y) = Var(X+Y)
-  num <- vx + vy + 2 * cxy
-  return(num / den)
+# Custom colors to match the target visualization style
+# (Red, Green, Blue, Purple, Pink, Gold, Teal)
+ratio_colors <- c(
+  "1"   = "#F8766D", 
+  "2"   = "#66BD63", 
+  "4"   = "#00BFC4", 
+  "5.8" = "#C77CFF", 
+  "8"   = "#FF61CC", 
+  "16"  = "#D4AF37", 
+  "32"  = "#00BA38"
+)
+
+# Function: Calculate Theoretical LDM
+# Formula: phi = (1 + R^2 + 2*rho*R) / (1 + R)^2
+# Where R is the ratio of standard deviations (sigma2/sigma1)
+calc_ldm_theoretical <- function(rho, R) {
+  (1 + R^2 + 2 * rho * R) / (1 + R)^2
 }
 
-# Function: Generate bivariate normal samples
-# Note: Added method = "svd" to handle cases where rho = 1 or -1
-sample_xy <- function(n, mu, s1, s2, rho){
-  Sigma <- matrix(c(s1^2, rho*s1*s2, rho*s1*s2, s2^2), 2, 2, byrow = TRUE)
-  mvtnorm::rmvnorm(n, mean = mu, sigma = Sigma, method = "svd")
-}
+# ==============================================================================
+# 1.2 Generate Data
+# ==============================================================================
 
-# Function: Format ratios (display integers without decimals)
-fmt_ratio <- function(x){
-  ifelse(abs(x - round(x)) < 1e-10, as.character(as.integer(round(x))), as.character(x))
-}
-
-# 1.2 Simulation Setup
-# ------------------------------------------------------------------------------
-n  <- 10          # Sample size per iteration
-B  <- 10000      # Number of bootstrap/replicates
-rhos <- seq(-1, 1, by = 0.1) # Correlation sequence
-
-sigma1_fixed <- 1
-sigma2_vec <- c(1, 2, 4, 8, 16, 32, 5.8)
-
-# Create parameter grid
-sig_pairs <- tibble(
-  sigma1 = sigma1_fixed,
-  sigma2 = sigma2_vec
-) |>
+# Generate main plotting data
+plot_data <- expand.grid(rho = rho_seq, ratio = ratios) %>%
   mutate(
-    ratio = sigma2 / sigma1,
-    label = fmt_ratio(ratio)
+    LDM = calc_ldm_theoretical(rho, ratio),
+    ratio_f = factor(ratio, levels = ratios)
   )
 
-grid <- tidyr::crossing(rho = rhos, sig_pairs)
-
-# 1.3 Execute Simulation
-# ------------------------------------------------------------------------------
-cat("Executing LDM simulation (Part 1)...\n")
-
-sim <- purrr::map_dfr(1:B, function(b){
-  grid |>
-    mutate(
-      ph = purrr::pmap_dbl(
-        list(s1 = sigma1, s2 = sigma2, r = rho),
-        function(s1, s2, r) {
-          xy <- sample_xy(n, c(0,0), s1, s2, r)
-          phi_lm(xy[,1], xy[,2])
-        }
-      ),
-      rep = b
-    )
-})
-
-# Aggregate results (Mean and Standard Error)
-sumry <- sim |>
-  group_by(ratio, label, sigma1, sigma2, rho) |>
-  summarise(
-    ph_mean  = mean(ph),
-    ph_se    = sd(ph)/sqrt(n()),
-    .groups = "drop"
+# Generate label positions (at rho = -1)
+label_data <- data.frame(ratio = ratios) %>%
+  mutate(
+    rho = -1,
+    LDM = calc_ldm_theoretical(-1, ratio),
+    label = paste("ratio =", ratio),
+    ratio_f = factor(ratio, levels = ratios)
   )
 
-# 1.4 Prepare Plotting Data
-# ------------------------------------------------------------------------------
-
-# (A) Label data: Position labels at the leftmost point of each line
-lab_df <- sumry |>
-  group_by(ratio, label) |>
-  slice_min(rho, n = 1, with_ties = FALSE) |>
-  ungroup() |>
+# Calculate intersection points where LDM = 0.5
+# Inverse Formula: rho = (0.5 * (1 + R)^2 - (1 + R^2)) / (2 * R)
+dot_data <- data.frame(ratio = ratios) %>%
   mutate(
-    ratio_chr = as.character(label),
-    lab = paste0("sigma[2]/sigma[1]==", ratio_chr)
-  )
+    rho_cross = (0.5 * (1 + ratio)^2 - (1 + ratio^2)) / (2 * ratio),
+    LDM = 0.5
+  ) %>%
+  # Only keep points that fall within the valid correlation range [-1, 1]
+  filter(rho_cross >= -1 & rho_cross <= 1)
 
-# (B) Calculate intersection where LDM = 0.5 (using linear interpolation)
-cross_df <- sumry |>
-  group_by(ratio, label) |>
-  arrange(rho, .by_group = TRUE) |>
-  mutate(
-    y = ph_mean,
-    y0 = y - 0.5,
-    y0_prev = lag(y0),
-    rho_prev = lag(rho),
-    y_prev = lag(y)
-  ) |>
-  filter(
-    !is.na(y0_prev) &
-      (y0 == 0 | y0_prev == 0 | (y0 * y0_prev < 0))
-  ) |>
-  mutate(
-    rho_cross = if_else(
-      y0 == 0,
-      rho,
-      rho_prev + (0.5 - y_prev) * (rho - rho_prev) / (y - y_prev)
-    ),
-    y_cross = 0.5
-  ) |>
-  ungroup()
+# ==============================================================================
+# 1.3 Generate Plot
+# ==============================================================================
 
-# Select the rho with the smallest absolute value for the intersection (usually unique)
-cross_df_one <- cross_df |>
-  group_by(ratio, label) |>
-  slice_min(abs(rho_cross), n = 1, with_ties = FALSE) |>
-  ungroup()
-
-# 1.5 Generate Plot (Simulation Result)
-# ------------------------------------------------------------------------------
-x_min <- min(sumry$rho, na.rm = TRUE)
-x_max <- max(sumry$rho, na.rm = TRUE)
-
-p1 <- ggplot(sumry, aes(x = rho, y = ph_mean, group = label, color = label)) +
-  # Dashed line at y=0.5
-  geom_segment(
-    aes(x = -1, xend = 1, y = 0.5, yend = 0.5), 
-    linetype = "dashed", 
-    linewidth = 0.7, 
-    color = "gray50",
-    inherit.aes = FALSE
+p1 <- ggplot() +
+  # A. Dashed reference line at y = 0.5 (strictly from -1 to 1)
+  geom_segment(aes(x = -1, xend = 1, y = 0.5, yend = 0.5), 
+               linetype = "dashed", color = "grey50", linewidth = 0.5) +
+  
+  # B. Theoretical LDM curves
+  geom_line(data = plot_data, aes(x = rho, y = LDM, color = ratio_f), linewidth = 1) +
+  
+  # C. Red intersection dots (where curve crosses 0.5)
+  geom_point(data = dot_data, aes(x = rho_cross, y = LDM), color = "red", size = 2.5) +
+  
+  # D. Text labels (Aligned to the left of the lines)
+  geom_text(data = label_data, aes(x = rho, y = LDM, label = label, color = ratio_f),
+            hjust = 1,         # Right align text (end of text touches the point)
+            nudge_x = -0.05,   # Shift slightly left to create a gap
+            size = 3.5, 
+            fontface = "bold") +
+  
+  # E. Scales and Styling
+  scale_color_manual(values = ratio_colors) +
+  scale_x_continuous(
+    limits = c(-1.45, 1),      # Extend left limit to accommodate text
+    breaks = seq(-1, 1, 0.5)   # Axis ticks remain normal
   ) +
-  geom_line(linewidth = 1) +
-  # Red intersection points
-  geom_point(
-    data = cross_df_one,
-    aes(x = rho_cross, y = y_cross),
-    inherit.aes = FALSE,
-    color = "red",
-    size = 2.5
-  ) +
-  # Line labels
-  geom_text(
-    data = lab_df,
-    aes(label = lab),
-    nudge_x = -0.05,
-    hjust = 1,
-    size = 3.5,
-    show.legend = FALSE,
-    parse = TRUE
-  ) +
-  coord_cartesian(
-    xlim = c(x_min - 0.25, x_max),
-    ylim = c(0, 1)
-  ) +
+  scale_y_continuous(limits = c(0, 1.05), breaks = seq(0, 1, 0.25)) +
+  
+  # F. English Labels and Theme
   labs(
-    title = expression(paste("Simulation: ", phi[LM], " vs. ", rho)),
+    title = expression(paste("LDM vs. ", rho)),
     x = expression(rho),
-    y = expression(phi[LM])
+    y = "LDM"
   ) +
-  theme_minimal(base_size = 13) +
-  theme(legend.position = "none")
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "none",
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "grey92"),
+    plot.title = element_text(face = "bold", size = 16, hjust = 0),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.text = element_text(color = "grey40")
+  )
 
+# Print the plot
 print(p1)
-
 
 #################################################################################################################
 
