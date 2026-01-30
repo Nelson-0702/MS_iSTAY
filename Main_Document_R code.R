@@ -524,7 +524,7 @@ fig2_or_4 <- function(output, metric_name) {
                 size=4.5, key_glyph = draw_key_path) +
       labs(y = "Gamma stability") +
       facet_wrap(~ version) +
-      scale_y_continuous(limits = c(0.35, 1.0))
+      scale_y_continuous(limits = c(0.35, 1.05))
     
   } else if (identical(output, output_fig_4b)) {
     p <- p +
