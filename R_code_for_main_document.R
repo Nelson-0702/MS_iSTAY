@@ -3,6 +3,7 @@ library(lmerTest)
 library(gridExtra)
 library(ggpubr)
 
+load("data/Data_Jena_20_metacommunities.rda")
 load("data/Data_Jena_76_community_populations.rda")
 load("data/Data_Jena_462_populations.rda")
 
